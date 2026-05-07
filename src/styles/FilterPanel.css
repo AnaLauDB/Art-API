@@ -1,8 +1,9 @@
 .filter-panel {
-    background: #f8f9fa;
+    background: #FFFBF8;
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(122, 92, 71, 0.05);
+    border: 1px solid rgba(168, 130, 109, 0.1);
 }
 
 .filter-header {
@@ -10,19 +11,20 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
-    border-bottom: 2px solid #e9ecef;
+    border-bottom: 2px solid #D9C8B8;
     padding-bottom: 1rem;
 }
 
 .filter-header h3 {
     margin: 0;
-    color: #333;
+    color: #7A5C47;
     font-size: 1.2rem;
+    font-weight: 600;
 }
 
 .reset-btn {
     padding: 0.5rem 1rem;
-    background: #e74c3c;
+    background: #C8A882;
     color: white;
     border: none;
     border-radius: 6px;
@@ -49,28 +51,30 @@
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #333;
+    color: #7A5C47;
     font-size: 0.95rem;
 }
 
 .filter-group input {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #dee2e6;
+    border: 1px solid #D9C8B8;
     border-radius: 6px;
     font-size: 0.95rem;
     transition: border-color 0.3s ease;
     box-sizing: border-box;
+    background: #FFFBF8;
+    color: #5C4033;
 }
 
 .filter-group input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #C8A882;
+    box-shadow: 0 0 0 3px rgba(168, 130, 109, 0.1);
 }
 
 .filter-group input:disabled {
-    background: #e9ecef;
+    background: #E8D5C4;
     cursor: not-allowed;
     opacity: 0.7;
 }
@@ -84,7 +88,7 @@
 .apply-btn {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #A0826D 0%, #7A5C47 100%);
     color: white;
     border: none;
     border-radius: 6px;

@@ -1,13 +1,14 @@
 .artwork-card {
-    background: white;
+    background: #FFFBF8;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(122, 92, 71, 0.08);
     transition: all 0.3s ease;
     cursor: pointer;
     height: 100%;
     display: flex;
     flex-direction: column;
+    border: 1px solid rgba(168, 130, 109, 0.1);
 }
 
 .artwork-card:hover {
@@ -39,7 +40,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #E8D5C4 0%, #D9C8B8 100%);
     font-size: 3rem;
 }
 
@@ -63,7 +64,7 @@
 
 .view-btn {
     padding: 0.75rem 1.5rem;
-    background: #667eea;
+    background: #A0826D;
     color: white;
     border: none;
     border-radius: 6px;
@@ -73,7 +74,7 @@
 }
 
 .view-btn:hover {
-    background: #764ba2;
+    background: #7A5C47;
     transform: scale(1.05);
 }
 
@@ -87,7 +88,7 @@
 .artwork-title {
     margin: 0 0 0.5rem;
     font-size: 1.1rem;
-    color: #333;
+    color: #5C4033;
     font-weight: 600;
     line-height: 1.4;
     flex: 1;
@@ -95,7 +96,7 @@
 
 .artwork-artist {
     margin: 0.5rem 0;
-    color: #667eea;
+    color: #A0826D;
     font-weight: 500;
     font-size: 0.95rem;
 }

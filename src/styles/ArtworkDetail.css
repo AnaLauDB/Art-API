@@ -24,7 +24,7 @@
 }
 
 .detail-modal {
-    background: white;
+    background: #FFFBF8;
     border-radius: 16px;
     max-width: 900px;
     width: 100%;
@@ -100,7 +100,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #E8D5C4 0%, #D9C8B8 100%);
     font-size: 5rem;
 }
 
@@ -115,19 +115,19 @@
 
 .detail-info h1 {
     margin: 0;
-    color: #333;
+    color: #5C4033;
     font-size: 2rem;
     line-height: 1.3;
 }
 
 .detail-item {
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid #E8D5C4;
     padding-bottom: 1rem;
 }
 
 .detail-item strong {
     display: block;
-    color: #667eea;
+    color: #A0826D;
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
     text-transform: uppercase;
@@ -151,7 +151,7 @@
 .detail-link {
     flex: 1;
     padding: 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #A0826D 0%, #7A5C47 100%);
     color: white;
     text-decoration: none;
     border-radius: 8px;
@@ -166,7 +166,7 @@
 
 .detail-link:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 20px rgba(122, 92, 71, 0.3);
 }
 
 /* Scrollbar customizado */
@@ -175,17 +175,17 @@
 }
 
 .detail-info::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #F5EBE0;
     border-radius: 10px;
 }
 
 .detail-info::-webkit-scrollbar-thumb {
-    background: #667eea;
+    background: #C8A882;
     border-radius: 10px;
 }
 
 .detail-info::-webkit-scrollbar-thumb:hover {
-    background: #764ba2;
+    background: #A0826D;
 }
 
 @media (max-width: 768px) {
