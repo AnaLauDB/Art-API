@@ -1,10 +1,8 @@
-import { getImageUrl } from "../services/arteServices";
 import "../styles/ArtworkDetail.css";
 
 export default function ArtworkDetail({ artwork, onClose }) {
-    const imageUrl = artwork.image_id
-        ? getImageUrl(artwork.image_id, "large")
-        : null;
+    // Nota: Carga de imágenes temporalmente deshabilitada
+    // Se investigará solución de CORS con IIIF Image API 2.0
 
     return (
         <div className="detail-modal-overlay" onClick={onClose}>
@@ -15,17 +13,9 @@ export default function ArtworkDetail({ artwork, onClose }) {
 
                 <div className="detail-content">
                     <div className="detail-image">
-                        {imageUrl ? (
-                            <img
-                                src={imageUrl}
-                                alt={artwork.title}
-                                crossOrigin="anonymous"
-                            />
-                        ) : (
-                            <div className="detail-image-placeholder">
-                                <span>📷</span>
-                            </div>
-                        )}
+                        <div className="detail-image-placeholder">
+                            <span>🖼️</span>
+                        </div>
                     </div>
 
                     <div className="detail-info">

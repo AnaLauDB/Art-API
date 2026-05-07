@@ -1,31 +1,15 @@
-import { useState } from "react";
-import { getImageUrl } from "../services/arteServices";
 import "../styles/ArtworkCard.css";
 
 export default function ArtworkCard({ artwork, onClick }) {
-    const [imageError, setImageError] = useState(false);
-
-    const imageUrl = artwork.image_id
-        ? getImageUrl(artwork.image_id, "medium")
-        : null;
+    // Nota: Carga de imágenes temporalmente deshabilitada
+    // Se investigará solución de CORS con IIIF Image API 2.0
 
     return (
         <div className="artwork-card" onClick={onClick}>
             <div className="artwork-image-container">
-                {imageUrl && !imageError ? (
-                    <img
-                        src={imageUrl}
-                        alt={artwork.title}
-                        className="artwork-image"
-                        onError={() => setImageError(true)}
-                        loading="lazy"
-                        crossOrigin="anonymous"
-                    />
-                ) : (
-                    <div className="artwork-image-placeholder">
-                        <span>📷</span>
-                    </div>
-                )}
+                <div className="artwork-image-placeholder">
+                    <span>🖼️</span>
+                </div>
                 <div className="artwork-overlay">
                     <button className="view-btn">Ver detalles</button>
                 </div>
