@@ -6,6 +6,9 @@ const API_BASE_URL = "https://api.artic.edu/api/v1";
 const apiClient = axios.create({
     baseURL: API_BASE_URL,
     timeout: 10000,
+    headers: {
+        "AIC-User-Agent": "art-search-engine (analog.lau@email.com)"
+    }
 });
 
 /**
@@ -22,7 +25,7 @@ export const searchArtworks = async (q, limit = 12, page = 1) => {
                 q,
                 limit,
                 page,
-                fields: "id,title,image_id,artist_title,date_display,dimensions,medium_display",
+                fields: "id,title,image_id,artist_title,date_display,dimensions,medium_display,is_public_domain",
             },
         });
         return response.data;
@@ -42,36 +45,15 @@ export const getArtworksByFilters = async (filters = {}) => {
         const params = {
             limit: filters.limit || 12,
             page: filters.page || 1,
-            fields:
-                "id,title,image_id,artist_title,date_display,dimensions,medium_display",
+            fields: "id,title,image_id,artist_title,date_display,dimensions,medium_display,is_public_domain",
         };
 
-        // Construir query de búsqueda con filtros semánticos
-        let queryParts = [];
-
+        // Usar término de búsqueda si existe
         if (filters.query) {
-            queryParts.push(`"${filters.query}"`);
+            params.q = filters.query;
+        } else {
+            params.q = "*"; // Búsqueda general si no hay filtros específicos
         }
-
-        if (filters.artist) {
-            queryParts.push(`artist:"${filters.artist}"`);
-        }
-
-        if (filters.medium) {
-            queryParts.push(`medium:"${filters.medium}"`);
-        }
-
-        if (filters.yearFrom || filters.yearTo) {
-            const from = filters.yearFrom || "*";
-            const to = filters.yearTo || "*";
-            queryParts.push(`date:[${from} TO ${to}]`);
-        }
-
-        if (filters.culture) {
-            queryParts.push(`cultures:"${filters.culture}"`);
-        }
-
-        params.q = queryParts.join(" AND ") || "*";
 
         const response = await apiClient.get("/artworks/search", { params });
         return response.data;
@@ -90,8 +72,7 @@ export const getArtworkDetails = async (id) => {
     try {
         const response = await apiClient.get(`/artworks/${id}`, {
             params: {
-                fields:
-                    "id,title,image_id,artist_title,date_display,dimensions,medium_display,description,provenance_text,publication_history,exhibition_history,credit_line,catalogue_display",
+                fields: "id,title,image_id,artist_title,date_display,dimensions,medium_display,description,credit_line",
             },
         });
         return response.data;
@@ -103,22 +84,23 @@ export const getArtworkDetails = async (id) => {
 
 /**
  * Obtener la URL de imagen de una obra
+ * TEMPORALMENTE DESHABILITADO: Investigando problemas de CORS con IIIF Image API 2.0
  * @param {string} imageId - ID de imagen
  * @param {string} size - Tamaño de imagen (small, medium, large)
  * @returns {string} URL de imagen
  */
-export const getImageUrl = (imageId, size = "medium") => {
-    if (!imageId) return null;
-    const sizes = {
-        small: "150x150",
-        medium: "400x400",
-        large: "843x843",
-    };
-    // Usar proxy CORS para evitar problemas de CORS con ARTIC
-    const directUrl = `https://www.artic.edu/iiif/2/${imageId}/full/${sizes[size]}/0/default.jpg`;
-    const corsProxyUrl = `https://proxy.cors.sh/${directUrl}`;
-    return corsProxyUrl;
-};
+// export const getImageUrl = (imageId, size = "medium") => {
+//     if (!imageId) return null;
+//     // IIIF Image API sizes - use comma notation per official API docs
+//     // See: https://api.artic.edu/docs/#iiif-image-api
+//     const sizes = {
+//         small: "200,",      // 200px width
+//         medium: "400,",     // 400px width  
+//         large: "843,",      // 843px width (recommended by ARTIC)
+//     };
+//     // Correct IIIF endpoint from official API documentation
+//     return `https://www.artic.edu/iiif/2/${imageId}/full/${sizes[size]}/0/default.jpg`;
+// };
 
 /**
  * Obtener recomendaciones basadas en una obra
@@ -153,7 +135,7 @@ export const getRecommendations = async (id) => {
  */
 export const getArtists = async () => {
     try {
-        const response = await apiClient.get("/artists", {
+        const response = await apiClient.get("/agents", {
             params: {
                 limit: 100,
                 fields: "id,title",
@@ -172,13 +154,15 @@ export const getArtists = async () => {
  */
 export const getMediums = async () => {
     try {
+        // Obtener las categorías de medios desde las obras
         const response = await apiClient.get("/artworks/search", {
             params: {
                 limit: 1,
-                facets: "medium_display",
+                "query[exists][medium_display]": "true",
+                aggs: "medium_display",
             },
         });
-        return response.data.aggregations;
+        return response.data;
     } catch (error) {
         console.error("Error fetching mediums:", error);
         throw error;
