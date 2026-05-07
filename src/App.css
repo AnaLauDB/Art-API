@@ -22,36 +22,37 @@ body,
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: #fafbfc;
+  background: #FFF8F3;
 }
 
 /* Header */
 .app-header {
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(135deg, #F5EBE0 0%, #E8D5C4 100%);
+  box-shadow: 0 2px 8px rgba(122, 92, 71, 0.08);
 }
 
 .header-content {
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 3rem;
   width: 100%;
 }
 
 .header-content h1 {
-  font-size: 2.5rem;
-  color: #333;
+  font-size: 2.8rem;
+  color: #7A5C47;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .header-content p {
-  color: #666;
+  color: #A0826D;
   font-size: 1.1rem;
   margin-bottom: 1.5rem;
+  font-weight: 500;
 }
 
 /* Main Content */
