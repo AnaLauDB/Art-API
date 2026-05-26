@@ -3,6 +3,9 @@ import SearchBar from "./components/SearchBar";
 import FilterPanel from "./components/FilterPanel";
 import ArtworkGrid from "./components/ArtworkGrid";
 import ArtworkDetail from "./components/ArtworkDetail";
+import ErrorBoundary from "./components/ErrorBoundary";
+import GalleryErrorBoundary from "./components/GalleryErrorBoundary";
+import DailyPickErrorBoundary from "./components/DailyPickErrorBoundary";
 import { searchArtworks, getArtworksByFilters } from "./services/arteServices";
 import "./App.css";
 
@@ -89,11 +92,13 @@ function App() {
               </div>
             )}
 
-            <ArtworkGrid
-              artworks={artworks}
-              onArtworkClick={setSelectedArtwork}
-              isLoading={isLoading}
-            />
+            <GalleryErrorBoundary>
+              <ArtworkGrid
+                artworks={artworks}
+                onArtworkClick={setSelectedArtwork}
+                isLoading={isLoading}
+              />
+            </GalleryErrorBoundary>
 
             {totalPages > 1 && !isLoading && artworks.length > 0 && (
               <div className="pagination">
@@ -143,4 +148,17 @@ function App() {
   );
 }
 
-export default App;
+/**
+ * Envolver la aplicación con ErrorBoundary global
+ * Esto captura CUALQUIER error en cualquier parte de la app
+ * Si algo falla, el usuario verá un mensaje amigable en lugar de blank page
+ */
+function AppWithErrorBoundary() {
+  return (
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  );
+}
+
+export default AppWithErrorBoundary;
