@@ -1,15 +1,21 @@
 import { useState, useEffect, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import SearchBar from "./components/SearchBar";
 import FilterPanel from "./components/FilterPanel";
 import ArtworkGrid from "./components/ArtworkGrid";
 import ArtworkDetail from "./components/ArtworkDetail";
+import Header from "./components/Shared/Header";
+import AuthModal from "./components/Auth/AuthModal";
 import ErrorBoundary from "./components/ErrorBoundary";
 import GalleryErrorBoundary from "./components/GalleryErrorBoundary";
 import DailyPickErrorBoundary from "./components/DailyPickErrorBoundary";
 import { searchArtworks, getArtworksByFilters } from "./services/arteServices";
+import { setUser } from "./redux/slices/authSlice";
+import { getCurrentUser, getToken } from "./services/authServices";
 import "./App.css";
 
 function App() {
+  const dispatch = useDispatch();
   const [artworks, setArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedArtwork, setSelectedArtwork] = useState(null);
@@ -17,11 +23,33 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
+  // Estados para rastrear la búsqueda/filtro actual
+  const [lastSearchQuery, setLastSearchQuery] = useState("art");
+  const [lastFilters, setLastFilters] = useState(null);
+
+  /**
+   * Al montar, verificar si hay usuario guardado en localStorage
+   * Si existe, cargar en Redux para mantener sesión persistente
+   */
+  useEffect(() => {
+    const savedUser = getCurrentUser();
+    const token = getToken();
+
+    if (savedUser && token) {
+      dispatch(setUser({
+        user: savedUser,
+        token: token,
+      }));
+    }
+  }, [dispatch]);
+
   // Buscar obras por término
   const handleSearch = useCallback(async (query) => {
     setIsLoading(true);
     setError(null);
     setCurrentPage(1);
+    setLastSearchQuery(query); // Guardar la búsqueda actual
+    setLastFilters(null);      // Limpiar filtros cuando buscamos por término
 
     try {
       const result = await searchArtworks(query, 12, 1);
@@ -43,6 +71,8 @@ function App() {
     setIsLoading(true);
     setError(null);
     setCurrentPage(1);
+    setLastSearchQuery(null);  // Limpiar búsqueda cuando usamos filtros
+    setLastFilters(filters);   // Guardar los filtros actuales
 
     try {
       const result = await getArtworksByFilters({
@@ -66,8 +96,56 @@ function App() {
     handleSearch("art");
   }, [handleSearch]);
 
+  /**
+   * NUEVO: Cuando cambie currentPage, repetir la búsqueda/filtro con la nueva página
+   * Esto es lo que faltaba para que la paginación funcione correctamente
+   */
+  useEffect(() => {
+    // Solo ejecutar si currentPage NO es 1 (porque la búsqueda inicial ya carga página 1)
+    if (currentPage === 1) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    const performPaginatedSearch = async () => {
+      try {
+        let result;
+
+        // Si hay una búsqueda activa, repetirla con la nueva página
+        if (lastSearchQuery) {
+          result = await searchArtworks(lastSearchQuery, 12, currentPage);
+        }
+        // Si hay filtros activos, repetirlos con la nueva página
+        else if (lastFilters) {
+          result = await getArtworksByFilters({
+            ...lastFilters,
+            limit: 12,
+            page: currentPage,
+          });
+        }
+
+        if (result) {
+          setArtworks(result.data || []);
+          setTotalPages(result.pagination?.total_pages || 1);
+          // Scroll al inicio de la galería para mejor UX
+          document.querySelector(".content")?.scrollIntoView({ behavior: "smooth" });
+        }
+      } catch (err) {
+        setError("Error al cambiar de página. Intenta de nuevo.");
+        console.error(err);
+        setArtworks([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    performPaginatedSearch();
+  }, [currentPage, lastSearchQuery, lastFilters]);
+
   return (
     <div className="app-container">
+      <Header />
+
       <header className="app-header">
         <div className="header-content">
           <h1>🎨 Art Institute Explorer</h1>
@@ -131,6 +209,8 @@ function App() {
           onClose={() => setSelectedArtwork(null)}
         />
       )}
+
+      <AuthModal />
 
       <footer className="app-footer">
         <p>
