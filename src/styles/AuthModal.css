@@ -1,0 +1,159 @@
+/**
+ * AuthModal.css - Estilos para el Modal de Autenticación
+ * 
+ * Crea un overlay oscuro con modal centrado en la pantalla
+ * Se posiciona encima de todo el contenido existente
+ */
+
+/* Contenedor principal del modal - overlay */
+.auth-modal-container {
+    /* Fixed para que se quede en la pantalla */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+
+    /* Display como flex para centrar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Backdrop oscuro detrás del modal */
+.auth-modal-backdrop {
+    /* Posicionarse detrás del modal */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* Fondo oscuro semi-transparente */
+    background-color: rgba(0, 0, 0, 0.5);
+
+    /* Cursor pointer para indicar que es clickeable */
+    cursor: pointer;
+
+    /* Animación suave al aparecer */
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Contenido del modal - el formulario */
+.auth-modal-content {
+    /* Relative para posicionarse encima del backdrop */
+    position: relative;
+    z-index: 1001;
+
+    /* Dimensiones */
+    width: 90%;
+    max-width: 450px;
+    padding: 30px;
+
+    /* Fondo blanco */
+    background-color: white;
+
+    /* Bordes redondeados */
+    border-radius: 8px;
+
+    /* Sombra para dar profundidad */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+    /* Animación suave al aparecer */
+    animation: slideUp 0.3s ease-out;
+}
+
+/* Botón de cerrar (X) */
+.auth-modal-close {
+    /* Posicionar en esquina superior derecha */
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+    /* Dimensiones */
+    width: 32px;
+    height: 32px;
+
+    /* Borrar estilos por defecto del botón */
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 24px;
+    color: #666;
+
+    /* Transición suave */
+    transition: color 0.2s;
+}
+
+.auth-modal-close:hover {
+    color: #000;
+}
+
+/* Heading del modal (Inicia Sesión / Crear Cuenta) */
+.auth-modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+}
+
+/* Párrafos (¿No tienes cuenta? etc) */
+.auth-modal-content p {
+    text-align: center;
+    margin-top: 15px;
+    color: #666;
+    font-size: 14px;
+}
+
+.auth-modal-content p button {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 0;
+}
+
+.auth-modal-content p button:hover {
+    text-decoration: underline;
+}
+
+/* Animación fade in para el backdrop */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animación slide up para el contenido */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive para mobile */
+@media (max-width: 768px) {
+    .auth-modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .auth-modal-content h2 {
+        font-size: 20px;
+    }
+}
