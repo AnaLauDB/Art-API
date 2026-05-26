@@ -5,8 +5,8 @@ Un buscador inteligente de obras de arte que permite a los usuarios explorar con
 ## 📌 Estado Actual - v2.0
 
 **Rama:** `v2_ArtApp`  
-**Fase Completada:** ✅ Fase 1 - Redux Setup & Store  
-**Fase Actual:** ⏳ Fase 2 - Error Boundaries & Componentes Auth
+**Fase Completada:** ✅ Fase 3 - Autenticación (Modal Overlay)  
+**Fase Actual:** 🔄 Fase 4 - Optimización de Imágenes
 
 ## 🎯 Objetivos v2.0
 
@@ -15,15 +15,15 @@ La versión 2.0 introduce mejoras arquitectónicas y nuevas funcionalidades dise
 ### Mejoras Técnicas
 - ✅ **Estado Global con Redux** - Centralizar estado con Redux Toolkit
 - ✅ **Redux DevTools** - Debugging avanzado del estado
-- 🔄 **Error Boundaries** - Captura y manejo de errores en componentes
-- 🔄 **React Hooks** - Uso correcto de useState, useEffect, useCallback, useRef
-- 🔄 **React Hook Form** - Validación de formularios simplificada
+- ✅ **Error Boundaries** - Captura y manejo de errores en componentes
+- ✅ **React Hooks** - Uso correcto de useState, useEffect, useCallback, useRef
+- ✅ **React Hook Form** - Validación de formularios simplificada
 
 ### Nuevas Funcionalidades
-- 🔄 **Sistema de Autenticación** - Registro e inicio de sesión
+- ✅ **Sistema de Autenticación** - Registro e inicio de sesión con Modal Overlay
 - 🔄 **Obra de Arte Diaria** - Cada usuario logueado recibe una obra sorpresa al día
 - 🔄 **Optimización de Imágenes** - Lazy loading y múltiples resoluciones
-- 🔄 **Rutas Protegidas** - Acceso limitado a usuarios autenticados
+- ✅ **Rutas Protegidas** - Acceso limitado a usuarios autenticados
 
 ## 🚀 Características v1.0 (Mantienen)
 
@@ -72,11 +72,13 @@ La versión 2.0 introduce mejoras arquitectónicas y nuevas funcionalidades dise
 src/
 ├── components/
 │   ├── ErrorBoundary.jsx              # [FASE 2] Captura global de errores
+│   ├── DailyPickErrorBoundary.jsx     # [FASE 2] Error boundary regional
+│   ├── GalleryErrorBoundary.jsx       # [FASE 2] Error boundary regional
 │   ├── Auth/                          # [FASE 3] Componentes de autenticación
-│   │   ├── LoginForm.jsx
-│   │   ├── RegisterForm.jsx
-│   │   ├── ProtectedRoute.jsx
-│   │   └── AuthModal.jsx
+│   │   ├── LoginForm.jsx              # Validación con React Hook Form
+│   │   ├── RegisterForm.jsx           # Validación con React Hook Form
+│   │   ├── ProtectedRoute.jsx         # Componente protegido
+│   │   └── AuthModal.jsx              # Modal overlay flotante
 │   ├── Gallery/                       # Componentes de galería (Mejorados v2.0)
 │   │   ├── ArtworkCard.jsx            # [FASE 4] Con lazy loading de imágenes
 │   │   ├── ArtworkDetail.jsx
@@ -119,7 +121,8 @@ src/
 │   ├── FilterPanel.css
 │   ├── ArtworkGrid.css
 │   ├── ArtworkDetail.css
-│   └── variables.css                  # [NUEVO] CSS variables globales
+│   ├── AuthModal.css                  # [FASE 3] Estilos del modal overlay
+│   └── variables.css                  # CSS variables globales
 │
 ├── App.jsx                            # [FASE 6] Se migrará a Redux
 ├── App.css
@@ -133,9 +136,9 @@ src/
 | Fase | Estado | Contenido |
 |------|--------|----------|
 | **Fase 1** | ✅ Completa | Redux Setup, Store, Slices, DevTools |
-| **Fase 2** | 🔄 En Progreso | Error Boundaries (Global, Regional, Local) |
-| **Fase 3** | ⏳ Pendiente | Auth Services, LoginForm, RegisterForm, ProtectedRoute |
-| **Fase 4** | ⏳ Pendiente | Image Services, Lazy Loading, Optimización |
+| **Fase 2** | ✅ Completa | Error Boundaries (Global, Regional, Local) |
+| **Fase 3** | ✅ Completa | Auth Services, LoginForm, RegisterForm, AuthModal Overlay, ProtectedRoute, Header |
+| **Fase 4** | 🔄 En Progreso | Image Services, Lazy Loading, Optimización |
 | **Fase 5** | ⏳ Pendiente | DailyArtwork, Hook para obra diaria |
 | **Fase 6** | ⏳ Pendiente | Migrar App.jsx a Redux, Testing |
 
@@ -152,29 +155,45 @@ src/
 - Separar lógica en slices según dominio
 - Usar DevTools para inspeccionar cambios de estado
 
-### Fase 2 🔄 - Error Boundaries
+### Fase 2 ✅ - Error Boundaries
 - **Class Components** - Error Boundaries (requieren clase)
 - **getDerivedStateFromError()** - Captura de errores
 - **componentDidCatch()** - Logging de errores
 - **Try/Catch** - Para errores en funciones async
+- **Niveles de Error Boundaries** - Global, Regional (DailyPick, Gallery)
 
 **Aprendizajes:**
 - Diferencia entre Error Boundaries y Try/Catch
 - Niveles de Error Boundaries (Global, Regional, Local)
 - Fallback UI para mejorar UX
+- Cómo no aplicar estilos a Error Boundaries puros
 
-### Fase 3 ⏳ - Autenticación
-- **React Hook Form** - Formularios validados
-- **localStorage** - Persistencia de sesión
+### Fase 3 ✅ - Autenticación con Modal Overlay
+- **React Hook Form** - Formularios validados (email, contraseña, confirmación)
+- **localStorage** - Persistencia de sesión (token + userData)
 - **useSelector/useDispatch** - Interacción con Redux
 - **ProtectedRoute** - Componentes condicionales
+- **CSS Positioning** - Modal overlay fijo, centrado con backdrop
+- **Animaciones CSS** - Fade in (backdrop) + Slide up (contenido)
+
+**Archivos Implementados:**
+- `src/services/authServices.js` - Registro, login, logout, verificación
+- `src/components/Auth/LoginForm.jsx` - Formulario de inicio de sesión
+- `src/components/Auth/RegisterForm.jsx` - Formulario de registro
+- `src/components/Auth/AuthModal.jsx` - Modal overlay con toggle login/registro
+- `src/components/Auth/ProtectedRoute.jsx` - Componente de acceso protegido
+- `src/components/Shared/Header.jsx` - Encabezado con info de usuario
+- `src/styles/AuthModal.css` - Estilos del modal overlay flotante
 
 **Aprendizajes:**
 - Validación de formularios sin librerías pesadas
 - Estructura de componentes protegidos
 - Gestión de autenticación con localStorage
+- Modal overlay con CSS (fixed positioning, z-index, backdrop)
+- UX mejorada: Modal centrado en pantalla vs al final de página
+- Persistencia de sesión en localStorage + Redux
 
-### Fase 4 ⏳ - Optimización de Imágenes
+### Fase 4 🔄 - Optimización de Imágenes
 - **IIIF Protocol** - URLs dinámicas de imágenes
 - **Lazy Loading** - Cargar imágenes cuando se necesitan
 - **Responsive Images** - srcSet para múltiples resoluciones
@@ -253,8 +272,8 @@ src/
 - **@redux-devtools/extension** ✅ - DevTools para debugging
 
 ### Autenticación y Formularios
-- **React Hook Form** 🔄 - Validación de formularios [Fase 3]
-- **localStorage** 🔄 - Persistencia de sesión [Fase 3]
+- **React Hook Form** ✅ - Validación de formularios [Fase 3]
+- **localStorage** ✅ - Persistencia de sesión [Fase 3]
 
 ### Peticiones HTTP
 - **Axios 1.15.2** - Cliente HTTP
@@ -356,10 +375,14 @@ y contraseña      (React Hook Form)
 ### Características de Autenticación
 
 - **Login/Registro**: Formularios validados con React Hook Form
+- **Modal Overlay**: Interfaz flotante centrada en la pantalla con backdrop oscuro
+- **Animaciones**: Transiciones suaves (fade in + slide up)
+- **Toggle**: Cambiar entre login y registro sin perder datos
 - **Persistencia**: Token guardado en localStorage
 - **Rutas Protegidas**: Acceso limitado a usuarios logueados
 - **Obra Diaria**: Cada usuario recibe una obra sorpresa al ingresar
 - **Estado Global**: Redux para mantener datos de sesión
+- **UX Mejorada**: Modal centrado en pantalla vs al final de página
 
 ## �📱 Responsive Design
 
@@ -429,8 +452,8 @@ El proyecto usa Vite con React. La configuración está en `vite.config.js`.
 
 ### Completar en Fase 2-6 ✅
 - [x] Redux Setup y State Management
-- [ ] Error Boundaries (Global, Regional, Local)
-- [ ] Autenticación con Login/Registro
+- [x] Error Boundaries (Global, Regional, Local)
+- [x] Autenticación con Login/Registro (Modal Overlay)
 - [ ] Optimización de Imágenes con Lazy Loading
 - [ ] Sistema de Obra de Arte Diaria
 - [ ] Migración completa a Redux
