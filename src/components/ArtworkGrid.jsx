@@ -14,7 +14,7 @@ export default function ArtworkGrid({ artworks, onArtworkClick, isLoading }) {
     if (!artworks || artworks.length === 0) {
         return (
             <div className="gallery-empty">
-                <p>📭 No se encontraron obras de arte</p>
+                <p> No se encontraron obras de arte</p>
                 <small>Intenta con otros términos de búsqueda</small>
             </div>
         );

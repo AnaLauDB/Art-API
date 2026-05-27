@@ -25,8 +25,8 @@ class DailyPickErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('❌ Error en DailyPick:', error);
-    console.error('📍 Info:', errorInfo.componentStack);
+    console.error('Error en DailyPick:', error);
+    console.error('Info:', errorInfo.componentStack);
   }
 
   render() {
@@ -45,7 +45,7 @@ class DailyPickErrorBoundary extends React.Component {
           </p>
 
           <button onClick={() => window.location.reload()}>
-            🔄 Recargar página
+            Recargar página
           </button>
         </div>
       );

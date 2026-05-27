@@ -59,11 +59,11 @@ class GalleryErrorBoundary extends React.Component {
 
                     <div>
                         <button onClick={this.handleRetry}>
-                            🔄 Reintentar
+                            Reintentar
                         </button>
 
                         <button onClick={() => window.location.href = '/'}>
-                            🏠 Volver al Inicio
+                            Volver al Inicio
                         </button>
                     </div>
                 </div>

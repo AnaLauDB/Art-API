@@ -78,7 +78,7 @@ class ErrorBoundary extends React.Component {
         if (this.state.hasError) {
             return (
                 <div>
-                    <h1>😕 ¡Oops! Algo salió mal</h1>
+                    <h1>¡Oops! Algo salió mal</h1>
 
                     <p>
                         <strong>Error:</strong> {this.state.errorMessage}
@@ -86,7 +86,7 @@ class ErrorBoundary extends React.Component {
 
                     {process.env.NODE_ENV === 'development' && (
                         <details>
-                            <summary>📋 Detalles técnicos (solo desarrollo)</summary>
+                            <summary> Detalles técnicos (solo desarrollo)</summary>
                             <pre>
                                 {this.state.errorStack}
                             </pre>
@@ -95,11 +95,11 @@ class ErrorBoundary extends React.Component {
 
                     <div>
                         <button onClick={this.handleReset}>
-                            🔄 Reintentar
+                            Reintentar
                         </button>
 
                         <button onClick={() => window.location.href = '/'}>
-                            🏠 Ir a Inicio
+                            Ir a Inicio
                         </button>
                     </div>
                 </div>

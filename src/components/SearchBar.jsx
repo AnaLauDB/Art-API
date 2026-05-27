@@ -49,7 +49,7 @@ export default function SearchBar({ onSearch, isLoading }) {
                         </>
                     ) : (
                         <>
-                            🔍 Buscar
+                            Buscar
                         </>
                     )}
                 </button>
