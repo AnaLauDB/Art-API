@@ -107,6 +107,12 @@
     font-size: 0.85rem;
 }
 
+.artwork-technique {
+    margin: 0.5rem 0 0;
+    color: #999;
+    font-size: 0.85rem;
+}
+
 @media (max-width: 768px) {
     .artwork-card {
         border-radius: 8px;
