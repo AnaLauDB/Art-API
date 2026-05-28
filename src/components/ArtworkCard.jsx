@@ -1,15 +1,24 @@
 import "../styles/ArtworkCard.css";
 
 export default function ArtworkCard({ artwork, onClick }) {
-    // Nota: Carga de imágenes temporalmente deshabilitada
-    // Se investigará solución de CORS con IIIF Image API 2.0
+    // Obtener URL de imagen de Cleveland Art API
+    const imageUrl = artwork.image_id;
 
     return (
         <div className="artwork-card" onClick={onClick}>
             <div className="artwork-image-container">
-                <div className="artwork-image-placeholder">
-                    <span>🖼️</span>
-                </div>
+                {imageUrl ? (
+                    <img
+                        src={imageUrl}
+                        alt={artwork.title}
+                        className="artwork-image"
+                        loading="lazy"
+                    />
+                ) : (
+                    <div className="artwork-image-placeholder">
+                        <span>🖼️</span>
+                    </div>
+                )}
                 <div className="artwork-overlay">
                     <button className="view-btn">Ver detalles</button>
                 </div>
@@ -21,6 +30,9 @@ export default function ArtworkCard({ artwork, onClick }) {
                 )}
                 {artwork.date_display && (
                     <p className="artwork-date">{artwork.date_display}</p>
+                )}
+                {artwork.technique && (
+                    <p className="artwork-technique">{artwork.technique}</p>
                 )}
             </div>
         </div>
