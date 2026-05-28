@@ -4,10 +4,11 @@ import "../styles/FilterPanel.css";
 export default function FilterPanel({ onFilter, isLoading }) {
     const [filters, setFilters] = useState({
         query: "",
-        artist: "",
-        medium: "",
-        yearFrom: "",
-        yearTo: "",
+        culture: "",
+        type: "",
+        creation_date: "",
+        department: "",
+        technique: "",
     });
 
     const handleChange = (e) => {
@@ -25,10 +26,11 @@ export default function FilterPanel({ onFilter, isLoading }) {
     const handleReset = () => {
         const emptyFilters = {
             query: "",
-            artist: "",
-            medium: "",
-            yearFrom: "",
-            yearTo: "",
+            culture: "",
+            type: "",
+            creation_date: "",
+            department: "",
+            technique: "",
         };
         setFilters(emptyFilters);
         onFilter(emptyFilters);
@@ -61,56 +63,68 @@ export default function FilterPanel({ onFilter, isLoading }) {
             </div>
 
             <div className="filter-group">
-                <label htmlFor="artist">Artista:</label>
+                <label htmlFor="culture">Cultura:</label>
                 <input
                     type="text"
-                    id="artist"
-                    name="artist"
-                    placeholder="Nombre del artista..."
-                    value={filters.artist}
+                    id="culture"
+                    name="culture"
+                    placeholder="Ej: Egyptian, Greek..."
+                    value={filters.culture}
                     onChange={handleChange}
                     disabled={isLoading}
                 />
             </div>
 
             <div className="filter-group">
-                <label htmlFor="medium">Material/Técnica:</label>
+                <label htmlFor="type">Tipo de Obra:</label>
                 <input
                     type="text"
-                    id="medium"
-                    name="medium"
-                    placeholder="Ej: óleo, escultura..."
-                    value={filters.medium}
+                    id="type"
+                    name="type"
+                    placeholder="Ej: Painting, Sculpture..."
+                    value={filters.type}
                     onChange={handleChange}
                     disabled={isLoading}
                 />
             </div>
 
-            <div className="filter-row">
-                <div className="filter-group">
-                    <label htmlFor="yearFrom">Año desde:</label>
-                    <input
-                        type="number"
-                        id="yearFrom"
-                        name="yearFrom"
-                        placeholder="1800"
-                        value={filters.yearFrom}
-                        onChange={handleChange}
-                        disabled={isLoading}
-                    />
-                </div>
-                <div className="filter-group">
-                    <label htmlFor="yearTo">Año hasta:</label>
-                    <input
-                        type="number"
-                        id="yearTo"
-                        name="yearTo"
-                        placeholder="2024"
-                        value={filters.yearTo}
-                        onChange={handleChange}
-                        disabled={isLoading}
-                    />
-                </div>
+            <div className="filter-group">
+                <label htmlFor="department">Departamento:</label>
+                <input
+                    type="text"
+                    id="department"
+                    name="department"
+                    placeholder="Ej: Contemporary Art..."
+                    value={filters.department}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                />
+            </div>
+
+            <div className="filter-group">
+                <label htmlFor="technique">Técnica:</label>
+                <input
+                    type="text"
+                    id="technique"
+                    name="technique"
+                    placeholder="Ej: oil, bronze..."
+                    value={filters.technique}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                />
+            </div>
+
+            <div className="filter-group">
+                <label htmlFor="creation_date">Año de Creación:</label>
+                <input
+                    type="text"
+                    id="creation_date"
+                    name="creation_date"
+                    placeholder="Ej: 1950"
+                    value={filters.creation_date}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                />
             </div>
 
             <button
