@@ -1,8 +1,13 @@
 import "../styles/ArtworkCard.css";
+import { generateSrcSet, generateSizes } from "../services/imageServices";
 
 export default function ArtworkCard({ artwork, onClick }) {
     // Obtener URL de imagen de Cleveland Art API
     const imageUrl = artwork.image_id;
+
+    // Generar srcSet y sizes para responsive images
+    const srcSet = generateSrcSet(imageUrl);
+    const sizes = generateSizes();
 
     return (
         <div className="artwork-card" onClick={onClick}>
@@ -10,13 +15,16 @@ export default function ArtworkCard({ artwork, onClick }) {
                 {imageUrl ? (
                     <img
                         src={imageUrl}
+                        srcSet={srcSet}
+                        sizes={sizes}
                         alt={artwork.title}
                         className="artwork-image"
                         loading="lazy"
+                        decoding="async"
                     />
                 ) : (
                     <div className="artwork-image-placeholder">
-                        <span>🖼️</span>
+                        <span>No disponible</span>
                     </div>
                 )}
                 <div className="artwork-overlay">
