@@ -5,8 +5,8 @@ Un buscador inteligente de obras de arte que permite a los usuarios explorar con
 ## 📌 Estado Actual - v2.0
 
 **Rama:** `v2_ArtApp`  
-**Fase Completada:** ✅ Fase 3 - Autenticación (Modal Overlay)  
-**Fase Actual:** 🔄 Fase 4 - Optimización de Imágenes
+**Fase Completada:** ✅ Fase 5 - Obra de Arte Diaria en Modal  
+**Fase Actual:** 🔄 Fase 6 - Migración Final
 
 ## 🎯 Objetivos v2.0
 
@@ -83,18 +83,11 @@ src/
 │   │   ├── ArtworkCard.jsx            # [FASE 4] Con lazy loading de imágenes
 │   │   ├── ArtworkDetail.jsx
 │   │   └── ArtworkGrid.jsx
-│   ├── DailyPick/                     # [FASE 5] Obra sorpresa diaria
-│   │   ├── DailyArtwork.jsx
-│   │   └── DailyArtwork.css
-│   ├── Search/
-│   │   ├── SearchBar.jsx              # Con useRef para input
-│   │   └── FilterPanel.jsx
-│   ├── Shared/                        # [NUEVO] Componentes compartidos
-│   │   ├── Header.jsx                 # Con info de usuario logueado
-│   │   └── Navigation.jsx
+│   ├── DailyArtworkModal.jsx          # [FASE 5] Obra sorpresa diaria en MODAL
+│   ├── OptimizedImage.jsx             # [FASE 4] Imagen con Intersection Observer
 │   ├── SearchBar.jsx                  # v1.0 (se migrará)
 │   ├── FilterPanel.jsx                # v1.0 (se migrará)
-│   ├── ArtworkCard.jsx                # v1.0 (se migrará)
+│   ├── ArtworkCard.jsx                # v1.0 (se migrará) - ACTUALIZADO FASE 4
 │   ├── ArtworkGrid.jsx                # v1.0 (se migrará)
 │   └── ArtworkDetail.jsx              # v1.0 (se migrará)
 │
@@ -114,14 +107,16 @@ src/
 │
 ├── utils/
 │   ├── constants.js                   # URLs, configuraciones
-│   └── dateUtils.js                   # Funciones de fecha para obra diaria
+│   └── dateUtils.js                   # [FASE 5] Funciones de fecha para obra diaria
 │
 ├── styles/
 │   ├── SearchBar.css
 │   ├── FilterPanel.css
 │   ├── ArtworkGrid.css
 │   ├── ArtworkDetail.css
+│   ├── ArtworkCard.css                # ACTUALIZADO FASE 4
 │   ├── AuthModal.css                  # [FASE 3] Estilos del modal overlay
+│   └── DailyArtwork.css               # [FASE 5] Estilos de obra diaria
 │   └── variables.css                  # CSS variables globales
 │
 ├── App.jsx                            # [FASE 6] Se migrará a Redux
@@ -138,8 +133,8 @@ src/
 | **Fase 1** | ✅ Completa | Redux Setup, Store, Slices, DevTools |
 | **Fase 2** | ✅ Completa | Error Boundaries (Global, Regional, Local) |
 | **Fase 3** | ✅ Completa | Auth Services, LoginForm, RegisterForm, AuthModal Overlay, ProtectedRoute, Header |
-| **Fase 4** | 🔄 En Progreso | Image Services, Lazy Loading, Optimización |
-| **Fase 5** | ⏳ Pendiente | DailyArtwork, Hook para obra diaria |
+| **Fase 4** | ✅ Completa | Image Services, Lazy Loading, Optimización |
+| **Fase 5** | ✅ Completa | DailyArtworkModal, dateUtils, localStorage + Redux, Modal Overlay 500-600px |
 | **Fase 6** | ⏳ Pendiente | Migrar App.jsx a Redux, Testing |
 
 ## 🎓 Conceptos y Tecnologías por Fase
@@ -193,27 +188,86 @@ src/
 - UX mejorada: Modal centrado en pantalla vs al final de página
 - Persistencia de sesión en localStorage + Redux
 
-### Fase 4 🔄 - Optimización de Imágenes
-- **IIIF Protocol** - URLs dinámicas de imágenes
-- **Lazy Loading** - Cargar imágenes cuando se necesitan
-- **Responsive Images** - srcSet para múltiples resoluciones
-- **imageServices.js** - Centralizar lógica de imágenes
+### Fase 4 🔄 - Optimización de Imágenes (En Progreso)
+- **Lazy Loading** - Cargar imágenes cuando se necesitan (loading="lazy")
+- **Responsive Images** - srcSet para múltiples densidades de píxeles
+- **Intersection Observer** - Carga avanzada con OptimizedImage
+- **imageServices.js** - Centralizar lógica de optimización de imágenes
+- **Decoding Asincrónico** - decoding="async" para no bloquear renderizado
+- **Tamaños Responsivos** - sizes para adaptar ancho según viewport
+
+**Archivos Implementados:**
+- `src/services/imageServices.js` - Funciones para optimizar URLs y generar srcSet/sizes
+- `src/components/OptimizedImage.jsx` - Componente reutilizable con Intersection Observer
+- `src/components/ArtworkCard.jsx` - Actualizado con srcSet, sizes, decoding async
+
+**Características:**
+- getOptimizedImageUrl() - Obtiene URL optimizada según tamaño
+- generateSrcSet() - Genera srcSet para alta densidad de píxeles
+- generateSizes() - Define tamaños responsivos por breakpoint
+- OptimizedImage - Componente con lazy loading avanzado
+- isValidImageUrl() - Valida URLs de imagen
+- getOptimalImageWidth() - Calcula ancho óptimo del dispositivo
 
 **Aprendizajes:**
-- Optimizar performance de galería
-- Trabajar con APIs de imágenes externas
-- Progressive image loading
+- Lazy loading nativo vs Intersection Observer
+- srcSet y sizes en HTML5
+- Responsive images sin framework externo
+- decoding asincrónico para performance
+- Breakpoints responsivos
+- Intersection Observer API para optimización
 
-### Fase 5 ⏳ - Obra Diaria
-- **useState + useEffect** - Lógica compleja en componentes
-- **dateUtils.js** - Funciones de fecha
-- **localStorage + Redux** - Cachear datos diarios
+### Fase 5 🔄 - Obra de Arte Diaria en MODAL (En Progreso)
+- **Modal Overlay** - Ancho 500-600px, centrado en pantalla
+- **localStorage** - Cachear obra diaria con fecha
+- **Redux + Hooks** - Sincronizar estado global
 - **Aleatoriedad** - Seleccionar obra random cada día
+- **Lógica de Fecha** - Detectar cambio de día
+- **Condicional de Login** - Solo visible para usuarios logueados
+- **Modal Management** - Botón para cerrar el modal
+
+**Archivos Implementados:**
+- `src/utils/dateUtils.js` - Funciones: getTodayDateKey(), isNewDay(), getDayInfo(), getTimeUntilMidnight()
+- `src/components/DailyArtworkModal.jsx` - Componente MODAL con lógica de obra diaria
+- `src/styles/DailyArtwork.css` - Estilos del modal (overlay, centrado, responsive)
+- `src/redux/slices/dailyPickSlice.js` - Redux slice existente (no modificado)
+- `src/App.jsx` - Actualizado para renderizar DailyArtworkModal condicionalmente para logueados
+
+**Características:**
+- getTodayDateKey() - Retorna fecha en formato YYYY-MM-DD
+- isNewDay(savedDate) - Verifica si es un día nuevo
+- getDayInfo() - Retorna info legible del día (nombre, mes, año)
+- getTimeUntilMidnight() - Calcula tiempo hasta medianoche
+- DailyArtworkModal renderiza en modal overlay (500-600px ancho)
+- localStorage persiste obra + fecha
+- Redux sincroniza estado
+- Misma obra todo el día
+- Nueva obra cada día
+- Botón ✕ para cerrar modal
+- Sin animaciones (reservadas para Fase 7)
+- Responsive: se adapta a móvil/tablet/desktop
+
+**Flujo:**
+1. Usuario logueado: DailyArtworkModal renderiza automáticamente
+2. No logueado: Modal NO aparece
+3. Al cargar modal: verifica localStorage para obra guardada
+4. Si existe y es mismo día: muestra obra guardada
+5. Si es nuevo día o no existe: busca obra aleatoria de página random (1-50)
+6. Guarda en localStorage con fecha actual
+7. Sincroniza con Redux dailyPickSlice
+8. Muestra obra en modal con: imagen, título, artista, año, técnica, cultura, tipo
+9. Usuario puede cerrar modal con botón ✕
+10. Modal reaparece al recargar página (si sigue logueado)
 
 **Aprendizajes:**
-- Cómo cachear datos por fecha
-- Sincronizar localStorage con Redux
 - Lógica de "obra del día" sin backend
+- Integración de localStorage + Redux
+- Detección de cambio de día
+- Modal overlay con fixed positioning
+- Renderizado condicional basado en autenticación
+- Manejo de fechas en JavaScript
+- Estado persistente entre recargas de página
+- Z-index management en modales
 
 ### Fase 6 ⏳ - Migración Final
 - **useCallback** - Optimizar re-renders
@@ -454,8 +508,8 @@ El proyecto usa Vite con React. La configuración está en `vite.config.js`.
 - [x] Redux Setup y State Management
 - [x] Error Boundaries (Global, Regional, Local)
 - [x] Autenticación con Login/Registro (Modal Overlay)
-- [ ] Optimización de Imágenes con Lazy Loading
-- [ ] Sistema de Obra de Arte Diaria
+- [x] Optimización de Imágenes con Lazy Loading (Fase 4 - Completada)
+- [x] Sistema de Obra de Arte Diaria en Modal (Fase 5 - Completada)
 - [ ] Migración completa a Redux
 - [ ] Testing de componentes
 
