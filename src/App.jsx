@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SearchBar from "./components/SearchBar";
 import FilterPanel from "./components/FilterPanel";
 import ArtworkGrid from "./components/ArtworkGrid";
 import ArtworkDetail from "./components/ArtworkDetail";
+import DailyArtworkModal from "./components/DailyArtworkModal";
 import Header from "./components/Shared/Header";
 import AuthModal from "./components/Auth/AuthModal";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -16,6 +17,7 @@ import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const [artworks, setArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedArtwork, setSelectedArtwork] = useState(null);
@@ -153,6 +155,12 @@ function App() {
         </div>
         <SearchBar onSearch={handleSearch} isLoading={isLoading} />
       </header>
+
+      {isLoggedIn && (
+        <DailyPickErrorBoundary>
+          <DailyArtworkModal />
+        </DailyPickErrorBoundary>
+      )}
 
       <main className="app-main">
         <div className="app-layout">
