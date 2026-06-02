@@ -102,8 +102,8 @@ function App() {
             setLastFilters(null);
             dispatch(setCurrentPage(1));
             dispatch(searchArtworksAsync({ query: 'art', limit: 12, page: 1 }));
-          }}>🎨 Art Institute Explorer</h1>
-          <p>Explora las mejores obras de arte del Art Institute de Chicago</p>
+          }}>🎨 Cleveland Art Museum </h1>
+          <p>Explora las mejores obras de arte del Cleveland Art Museum</p>
         </div>
         <SearchBar onSearch={handleSearch} isLoading={isLoading} />
       </header>
@@ -178,13 +178,13 @@ function App() {
 
       <footer className="app-footer">
         <p>
-          © 2024 Art Institute Explorer • Datos del{" "}
+          © 2024 Cleveland Art Museum • Datos del{" "}
           <a
-            href="https://www.artic.edu/open-access"
+            href="https://openaccess.clevelandart.org/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Art Institute of Chicago
+            Cleveland Art Museum
           </a>
         </p>
       </footer>
