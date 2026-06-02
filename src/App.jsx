@@ -10,7 +10,7 @@ import AuthModal from "./components/Auth/AuthModal";
 import ErrorBoundary from "./components/ErrorBoundary";
 import GalleryErrorBoundary from "./components/GalleryErrorBoundary";
 import DailyPickErrorBoundary from "./components/DailyPickErrorBoundary";
-import { searchArtworks, getArtworksByFilters } from "./services/arteServices";
+import { searchArtworksAsync, filterArtworksAsync, setCurrentPage } from "./redux/slices/artworksSlice";
 import { setUser } from "./redux/slices/authSlice";
 import { getCurrentUser, getToken } from "./services/authServices";
 import "./App.css";
@@ -18,12 +18,8 @@ import "./App.css";
 function App() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-  const [artworks, setArtworks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedArtwork, setSelectedArtwork] = useState(null);
-  const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const { items: artworks, loading: isLoading, error, currentPage, totalPages } = useSelector(state => state.artworks);
+  const [localSelectedArtwork, setLocalSelectedArtwork] = useState(null);
 
   // Estados para rastrear la búsqueda/filtro actual
   const [lastSearchQuery, setLastSearchQuery] = useState("art");
@@ -47,51 +43,29 @@ function App() {
 
   // Buscar obras por término
   const handleSearch = useCallback(async (query) => {
-    setIsLoading(true);
-    setError(null);
-    setCurrentPage(1);
     setLastSearchQuery(query); // Guardar la búsqueda actual
     setLastFilters(null);      // Limpiar filtros cuando buscamos por término
-
-    try {
-      const result = await searchArtworks(query, 12, 1);
-      setArtworks(result.data || []);
-      setTotalPages(result.pagination?.total_pages || 1);
-    } catch (err) {
-      setError(
-        "No se pudieron cargar las obras de arte. Intenta de nuevo."
-      );
-      console.error(err);
-      setArtworks([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    dispatch(setCurrentPage(1));
+    dispatch(searchArtworksAsync({ query, limit: 12, page: 1 }));
+  }, [dispatch]);
 
   // Aplicar filtros avanzados
   const handleFilter = useCallback(async (filters) => {
-    setIsLoading(true);
-    setError(null);
-    setCurrentPage(1);
+    // Si no hay filtros activos, tratar como 'limpiar filtros' y volver a la búsqueda por defecto
+    const hasAny = Object.values(filters || {}).some(v => v && String(v).trim() !== "");
+    if (!hasAny) {
+      setLastFilters(null);
+      setLastSearchQuery("art");
+      dispatch(setCurrentPage(1));
+      dispatch(searchArtworksAsync({ query: 'art', limit: 12, page: 1 }));
+      return;
+    }
+
     setLastSearchQuery(null);  // Limpiar búsqueda cuando usamos filtros
     setLastFilters(filters);   // Guardar los filtros actuales
-
-    try {
-      const result = await getArtworksByFilters({
-        ...filters,
-        limit: 12,
-        page: 1,
-      });
-      setArtworks(result.data || []);
-      setTotalPages(result.pagination?.total_pages || 1);
-    } catch (err) {
-      setError("Error al aplicar los filtros. Intenta de nuevo.");
-      console.error(err);
-      setArtworks([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    dispatch(setCurrentPage(1));
+    dispatch(filterArtworksAsync({ filters, limit: 12, page: 1 }));
+  }, [dispatch]);
 
   // Cargar obras iniciales al montar
   useEffect(() => {
@@ -106,43 +80,16 @@ function App() {
     // Solo ejecutar si currentPage NO es 1 (porque la búsqueda inicial ya carga página 1)
     if (currentPage === 1) return;
 
-    setIsLoading(true);
-    setError(null);
+    // Re-disparar la búsqueda o el filtro según el contexto guardado
+    if (lastSearchQuery) {
+      dispatch(searchArtworksAsync({ query: lastSearchQuery, limit: 12, page: currentPage }));
+    } else if (lastFilters) {
+      dispatch(filterArtworksAsync({ filters: lastFilters, limit: 12, page: currentPage }));
+    }
 
-    const performPaginatedSearch = async () => {
-      try {
-        let result;
-
-        // Si hay una búsqueda activa, repetirla con la nueva página
-        if (lastSearchQuery) {
-          result = await searchArtworks(lastSearchQuery, 12, currentPage);
-        }
-        // Si hay filtros activos, repetirlos con la nueva página
-        else if (lastFilters) {
-          result = await getArtworksByFilters({
-            ...lastFilters,
-            limit: 12,
-            page: currentPage,
-          });
-        }
-
-        if (result) {
-          setArtworks(result.data || []);
-          setTotalPages(result.pagination?.total_pages || 1);
-          // Scroll al inicio de la galería para mejor UX
-          document.querySelector(".content")?.scrollIntoView({ behavior: "smooth" });
-        }
-      } catch (err) {
-        setError("Error al cambiar de página. Intenta de nuevo.");
-        console.error(err);
-        setArtworks([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    performPaginatedSearch();
-  }, [currentPage, lastSearchQuery, lastFilters]);
+    // Scroll al inicio de la galería para mejor UX
+    document.querySelector(".content")?.scrollIntoView({ behavior: "smooth" });
+  }, [currentPage, lastSearchQuery, lastFilters, dispatch]);
 
   return (
     <div className="app-container">
@@ -150,7 +97,12 @@ function App() {
 
       <header className="app-header">
         <div className="header-content">
-          <h1>🎨 Art Institute Explorer</h1>
+          <h1 style={{ cursor: 'pointer' }} onClick={() => {
+            setLastSearchQuery('art');
+            setLastFilters(null);
+            dispatch(setCurrentPage(1));
+            dispatch(searchArtworksAsync({ query: 'art', limit: 12, page: 1 }));
+          }}>🎨 Art Institute Explorer</h1>
           <p>Explora las mejores obras de arte del Art Institute de Chicago</p>
         </div>
         <SearchBar onSearch={handleSearch} isLoading={isLoading} />
@@ -181,7 +133,7 @@ function App() {
             <GalleryErrorBoundary>
               <ArtworkGrid
                 artworks={artworks}
-                onArtworkClick={setSelectedArtwork}
+                onArtworkClick={setLocalSelectedArtwork}
                 isLoading={isLoading}
               />
             </GalleryErrorBoundary>
@@ -189,7 +141,10 @@ function App() {
             {totalPages > 1 && !isLoading && artworks.length > 0 && (
               <div className="pagination">
                 <button
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  onClick={() => {
+                    const next = Math.max(1, currentPage - 1);
+                    dispatch(setCurrentPage(next));
+                  }}
                   disabled={currentPage === 1}
                 >
                   ← Anterior
@@ -198,9 +153,10 @@ function App() {
                   Página {currentPage} de {totalPages}
                 </span>
                 <button
-                  onClick={() =>
-                    setCurrentPage((p) => Math.min(totalPages, p + 1))
-                  }
+                  onClick={() => {
+                    const next = Math.min(totalPages, currentPage + 1);
+                    dispatch(setCurrentPage(next));
+                  }}
                   disabled={currentPage === totalPages}
                 >
                   Siguiente →
@@ -211,10 +167,10 @@ function App() {
         </div>
       </main>
 
-      {selectedArtwork && (
+      {localSelectedArtwork && (
         <ArtworkDetail
-          artwork={selectedArtwork}
-          onClose={() => setSelectedArtwork(null)}
+          artwork={localSelectedArtwork}
+          onClose={() => setLocalSelectedArtwork(null)}
         />
       )}
 
