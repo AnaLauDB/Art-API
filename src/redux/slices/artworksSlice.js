@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { searchArtworks as apiSearchArtworks, getArtworksByFilters as apiGetArtworksByFilters } from '../../services/arteServices';
 
 /**
  * artworksSlice - Manejo del estado de obras de arte
@@ -53,7 +54,62 @@ const artworksSlice = createSlice({
             state.error = null;
         },
     },
+    extraReducers: (builder) => {
+        builder
+            .addCase(searchArtworksAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(searchArtworksAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.items = action.payload.data || [];
+                state.totalPages = action.payload.pagination?.total_pages || 0;
+                state.totalResults = action.payload.pagination?.total || 0;
+                state.error = null;
+            })
+            .addCase(searchArtworksAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error?.message || 'Error fetching artworks';
+                state.items = [];
+            })
+
+            .addCase(filterArtworksAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(filterArtworksAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.items = action.payload.data || [];
+                state.totalPages = action.payload.pagination?.total_pages || 0;
+                state.totalResults = action.payload.pagination?.total || 0;
+                state.error = null;
+            })
+            .addCase(filterArtworksAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error?.message || 'Error filtering artworks';
+                state.items = [];
+            });
+    }
 });
+
+/**
+ * Thunks
+ */
+export const searchArtworksAsync = createAsyncThunk(
+    'artworks/search',
+    async ({ query, limit = 12, page = 1 }) => {
+        const res = await apiSearchArtworks(query, limit, page);
+        return res;
+    }
+);
+
+export const filterArtworksAsync = createAsyncThunk(
+    'artworks/filter',
+    async ({ filters = {}, limit = 12, page = 1 }) => {
+        const res = await apiGetArtworksByFilters({ ...filters, limit, page });
+        return res;
+    }
+);
 
 export const {
     setArtworks,
