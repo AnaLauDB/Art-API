@@ -122,146 +122,13 @@ src/
 ├── App.jsx                            # [FASE 6] Se migrará a Redux
 ├── App.css
 ├── index.css
-├── main.jsx                           # ✅ Con Redux Provider
-└── assets/
-```
-
-### Fases de Implementación
-
-| Fase | Estado | Contenido |
-|------|--------|----------|
-| **Fase 1** | ✅ Completa | Redux Setup, Store, Slices, DevTools |
-| **Fase 2** | ✅ Completa | Error Boundaries (Global, Regional, Local) |
-| **Fase 3** | ✅ Completa | Auth Services, LoginForm, RegisterForm, AuthModal Overlay, ProtectedRoute, Header |
-| **Fase 4** | ✅ Completa | Image Services, Lazy Loading, Optimización |
-| **Fase 5** | ✅ Completa | DailyArtworkModal, dateUtils, localStorage + Redux, Modal Overlay 500-600px |
-| **Fase 6** | ⏳ Pendiente | Migrar App.jsx a Redux, Testing |
-
-## 🎓 Conceptos y Tecnologías por Fase
-
-### Fase 1 ✅ - Redux Setup
-- **Redux Toolkit** - Simplifica configuración de Redux
-- **Redux DevTools** - Debugging del estado global
-- **Slices** - Estructura modular del estado
-- **Reducers y Actions** - Cómo modificar el estado
-
-**Aprendizajes:**
-- Centralizar estado global vs estado local
-- Separar lógica en slices según dominio
-- Usar DevTools para inspeccionar cambios de estado
-
-### Fase 2 ✅ - Error Boundaries
-- **Class Components** - Error Boundaries (requieren clase)
-- **getDerivedStateFromError()** - Captura de errores
-- **componentDidCatch()** - Logging de errores
-- **Try/Catch** - Para errores en funciones async
-- **Niveles de Error Boundaries** - Global, Regional (DailyPick, Gallery)
-
-**Aprendizajes:**
-- Diferencia entre Error Boundaries y Try/Catch
-- Niveles de Error Boundaries (Global, Regional, Local)
-- Fallback UI para mejorar UX
-- Cómo no aplicar estilos a Error Boundaries puros
-
-### Fase 3 ✅ - Autenticación con Modal Overlay
-- **React Hook Form** - Formularios validados (email, contraseña, confirmación)
-- **localStorage** - Persistencia de sesión (token + userData)
-- **useSelector/useDispatch** - Interacción con Redux
-- **ProtectedRoute** - Componentes condicionales
-- **CSS Positioning** - Modal overlay fijo, centrado con backdrop
-- **Animaciones CSS** - Fade in (backdrop) + Slide up (contenido)
-
-**Archivos Implementados:**
-- `src/services/authServices.js` - Registro, login, logout, verificación
-- `src/components/Auth/LoginForm.jsx` - Formulario de inicio de sesión
-- `src/components/Auth/RegisterForm.jsx` - Formulario de registro
-- `src/components/Auth/AuthModal.jsx` - Modal overlay con toggle login/registro
-- `src/components/Auth/ProtectedRoute.jsx` - Componente de acceso protegido
-- `src/components/Shared/Header.jsx` - Encabezado con info de usuario
-- `src/styles/AuthModal.css` - Estilos del modal overlay flotante
-
-**Aprendizajes:**
-- Validación de formularios sin librerías pesadas
-- Estructura de componentes protegidos
-- Gestión de autenticación con localStorage
-- Modal overlay con CSS (fixed positioning, z-index, backdrop)
-- UX mejorada: Modal centrado en pantalla vs al final de página
-- Persistencia de sesión en localStorage + Redux
-
-### Fase 4 🔄 - Optimización de Imágenes (En Progreso)
-- **Lazy Loading** - Cargar imágenes cuando se necesitan (loading="lazy")
-- **Responsive Images** - srcSet para múltiples densidades de píxeles
-- **Intersection Observer** - Carga avanzada con OptimizedImage
-- **imageServices.js** - Centralizar lógica de optimización de imágenes
-- **Decoding Asincrónico** - decoding="async" para no bloquear renderizado
-- **Tamaños Responsivos** - sizes para adaptar ancho según viewport
-
-**Archivos Implementados:**
-- `src/services/imageServices.js` - Funciones para optimizar URLs y generar srcSet/sizes
-- `src/components/OptimizedImage.jsx` - Componente reutilizable con Intersection Observer
-- `src/components/ArtworkCard.jsx` - Actualizado con srcSet, sizes, decoding async
-
-**Características:**
-- getOptimizedImageUrl() - Obtiene URL optimizada según tamaño
-- generateSrcSet() - Genera srcSet para alta densidad de píxeles
-- generateSizes() - Define tamaños responsivos por breakpoint
-- OptimizedImage - Componente con lazy loading avanzado
-- isValidImageUrl() - Valida URLs de imagen
-- getOptimalImageWidth() - Calcula ancho óptimo del dispositivo
-
-**Aprendizajes:**
-- Lazy loading nativo vs Intersection Observer
-- srcSet y sizes en HTML5
-- Responsive images sin framework externo
-- decoding asincrónico para performance
-- Breakpoints responsivos
-- Intersection Observer API para optimización
-
-### Fase 5 🔄 - Obra de Arte Diaria en MODAL (En Progreso)
-- **Modal Overlay** - Ancho 500-600px, centrado en pantalla
-- **localStorage** - Cachear obra diaria con fecha
-- **Redux + Hooks** - Sincronizar estado global
-- **Aleatoriedad** - Seleccionar obra random cada día
-- **Lógica de Fecha** - Detectar cambio de día
-- **Condicional de Login** - Solo visible para usuarios logueados
-- **Modal Management** - Botón para cerrar el modal
-
-**Archivos Implementados:**
-- `src/utils/dateUtils.js` - Funciones: getTodayDateKey(), isNewDay(), getDayInfo(), getTimeUntilMidnight()
-- `src/components/DailyArtworkModal.jsx` - Componente MODAL con lógica de obra diaria
-- `src/styles/DailyArtwork.css` - Estilos del modal (overlay, centrado, responsive)
-- `src/redux/slices/dailyPickSlice.js` - Redux slice existente (no modificado)
-- `src/App.jsx` - Actualizado para renderizar DailyArtworkModal condicionalmente para logueados
-
-**Características:**
-- getTodayDateKey() - Retorna fecha en formato YYYY-MM-DD
-- isNewDay(savedDate) - Verifica si es un día nuevo
-- getDayInfo() - Retorna info legible del día (nombre, mes, año)
-- getTimeUntilMidnight() - Calcula tiempo hasta medianoche
-- DailyArtworkModal renderiza en modal overlay (500-600px ancho)
-- localStorage persiste obra + fecha
-- Redux sincroniza estado
-- Misma obra todo el día
-- Nueva obra cada día
-- Botón ✕ para cerrar modal
-- Sin animaciones (reservadas para Fase 7)
-- Responsive: se adapta a móvil/tablet/desktop
-
-**Flujo:**
-1. Usuario logueado: DailyArtworkModal renderiza automáticamente
-2. No logueado: Modal NO aparece
-3. Al cargar modal: verifica localStorage para obra guardada
-4. Si existe y es mismo día: muestra obra guardada
-5. Si es nuevo día o no existe: busca obra aleatoria de página random (1-50)
-6. Guarda en localStorage con fecha actual
-7. Sincroniza con Redux dailyPickSlice
-8. Muestra obra en modal con: imagen, título, artista, año, técnica, cultura, tipo
-9. Usuario puede cerrar modal con botón ✕
-10. Modal reaparece al recargar página (si sigue logueado)
-
-**Aprendizajes:**
-- Lógica de "obra del día" sin backend
-- Integración de localStorage + Redux
+### Resumen de Fases
+- Fase 1 — Redux setup: ✅ Completada
+- Fase 2 — Error boundaries: ✅ Completada
+- Fase 3 — Autenticación (modal): ✅ Completada
+- Fase 4 — Optimización de imágenes: ✅ Completada
+- Fase 5 — Obra diaria (modal): ✅ Completada
+- Fase 6 — Migración a Redux + thunks: ✅ Completada
 - Detección de cambio de día
 - Modal overlay con fixed positioning
 - Renderizado condicional basado en autenticación
@@ -385,47 +252,6 @@ npm run preview      # Previsualizar build
 npm run lint         # Ejecutar ESLint
 ```
 
-## � Flujo de Autenticación v2.0 [Fase 3-5]
-
-```
-┌─────────────────────────────────────┐
-│  Usuario sin registrar              │
-└──────────────┬──────────────────────┘
-               │
-          ¿Qué hace?
-               │
-      ┌────────┴─────────┐
-      ↓                  ↓
-   Login            Registrarse
-      │                  │
-      ↓                  ↓
-Ingresa email     Completa formulario
-y contraseña      (React Hook Form)
-      │                  │
-      └────────┬─────────┘
-               ↓
-      Redux: authSlice.setUser()
-      localStorage: token + userData
-               ↓
-      ┌─────────────────────────┐
-      │  Usuario Autenticado    │
-      └──────────┬──────────────┘
-                 │
-        ┌────────┴────────┐
-        ↓                 ↓
-   Acceso a       Obra de Arte
-   Galería        Sorpresa Diaria
-   Completa       (una por día)
-                  └─────────────────────────┐
-                                            ↓
-                                   ┌────────────────────┐
-                                   │ DailyArtwork Comp. │
-                                   │ (cada vez entra)   │
-                                   │ Obra aleatoria     │
-                                   │ cacheada por fecha │
-                                   └────────────────────┘
-```
-
 ### Características de Autenticación
 
 - **Login/Registro**: Formularios validados con React Hook Form
@@ -510,7 +336,7 @@ El proyecto usa Vite con React. La configuración está en `vite.config.js`.
 - [x] Autenticación con Login/Registro (Modal Overlay)
 - [x] Optimización de Imágenes con Lazy Loading (Fase 4 - Completada)
 - [x] Sistema de Obra de Arte Diaria en Modal (Fase 5 - Completada)
-- [ ] Migración completa a Redux
+- [x] Migración completa a Redux
 - [ ] Testing de componentes
 
 ### Funcionalidades Adicionales 🔄
@@ -564,14 +390,5 @@ Las contribuciones son bienvenidas. Por favor:
 **Ana Lau**
 - GitHub: [@AnaLauDB](https://github.com/AnaLauDB)
 
-## 📞 Soporte
 
-Si encuentras problemas o tienes sugerencias, por favor:
-- Abre un issue en GitHub
-- Contacta a través de GitHub Issues
 
-## 🙏 Agradecimientos
-
-- Art Institute of Chicago por proporcionar la API pública
-- Comunidad de React y Vite
-- Todos los contribuidores
