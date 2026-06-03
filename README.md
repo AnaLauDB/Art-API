@@ -340,11 +340,8 @@ El proyecto usa Vite con React. La configuración está en `vite.config.js`.
 - [ ] Testing de componentes
 
 ### Funcionalidades Adicionales 🔄
-- [ ] Guardar obras favoritas en localStorage/Redux
-- [ ] Historial de búsquedas por usuario
-- [ ] Perfil de usuario (pendiente backend)
-- [ ] Notificaciones de nuevas obras
-- [ ] Compartir obras en redes sociales
+- [x] Guardar obras favoritas en localStorage/Redux
+- [x] Compartir obras en redes sociales
 - [ ] Modo oscuro/claro
 
 

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuthModalVisible } from '../../redux/slices/uiSlice';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
-import '../../styles/AuthModal.css';
+import styles from '../../styles/AuthModal.module.css';
 
 /**
  * AuthModal - Modal de Autenticación
@@ -36,15 +36,15 @@ function AuthModal() {
     };
 
     return (
-        <div className="auth-modal-container">
-            <div className="auth-modal-backdrop" onClick={handleCloseModal}>
+        <div className={styles['auth-modal-container']}>
+            <div className={styles['auth-modal-backdrop']} onClick={handleCloseModal}>
                 {/* Backdrop oscuro detrás del modal */}
             </div>
 
-            <div className="auth-modal-content">
+            <div className={styles['auth-modal-content']}>
                 {/* Botón para cerrar modal */}
                 <button
-                    className="auth-modal-close"
+                    className={styles['auth-modal-close']}
                     onClick={handleCloseModal}
                     type="button"
                     aria-label="Cerrar modal"

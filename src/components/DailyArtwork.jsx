@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setDailyArtwork, setLoading, setError } from '../redux/slices/dailyPickSlice';
 import { getTodayDateKey, isNewDay } from '../utils/dateUtils';
 import { searchArtworks } from '../services/arteServices';
-import '../styles/DailyArtwork.css';
+import styles from '../styles/DailyArtwork.module.css';
 
 /**
  * Componente DailyArtwork - Obra de arte sorpresa del día
@@ -87,9 +87,9 @@ export default function DailyArtwork() {
     // Mientras carga
     if (loading || !isInitialized) {
         return (
-            <section className="daily-artwork-section">
-                <div className="daily-artwork-container">
-                    <p className="loading-text">Cargando tu obra del día...</p>
+            <section className={styles['daily-artwork-section']}>
+                <div className={styles['daily-artwork-container']}>
+                    <p className={styles['loading-text']}>Cargando tu obra del día...</p>
                 </div>
             </section>
         );
@@ -98,9 +98,9 @@ export default function DailyArtwork() {
     // Si hay error
     if (error) {
         return (
-            <section className="daily-artwork-section">
-                <div className="daily-artwork-container">
-                    <p className="error-text">{error}</p>
+            <section className={styles['daily-artwork-section']}>
+                <div className={styles['daily-artwork-container']}>
+                    <p className={styles['error-text']}>{error}</p>
                 </div>
             </section>
         );
@@ -109,9 +109,9 @@ export default function DailyArtwork() {
     // Si no hay obra
     if (!artwork) {
         return (
-            <section className="daily-artwork-section">
-                <div className="daily-artwork-container">
-                    <p className="no-artwork-text">No se encontró obra del día</p>
+            <section className={styles['daily-artwork-section']}>
+                <div className={styles['daily-artwork-container']}>
+                    <p className={styles['no-artwork-text']}>No se encontró obra del día</p>
                 </div>
             </section>
         );
@@ -120,34 +120,34 @@ export default function DailyArtwork() {
     const imageUrl = artwork.image_id;
 
     return (
-        <section className="daily-artwork-section">
-            <div className="daily-artwork-container">
-                <h2 className="daily-artwork-title">Tu Obra del Día</h2>
+        <section className={styles['daily-artwork-section']}>
+            <div className={styles['daily-artwork-container']}>
+                <h2 className={styles['daily-artwork-title']}>Tu Obra del Día</h2>
 
-                <div className="daily-artwork-content">
+                <div className={styles['daily-artwork-content']}>
                     {/* Imagen */}
-                    <div className="daily-artwork-image-wrapper">
+                    <div className={styles['daily-artwork-image-wrapper']}>
                         {imageUrl ? (
                             <img
                                 src={imageUrl}
                                 alt={artwork.title}
-                                className="daily-artwork-image"
+                                className={styles['daily-artwork-image']}
                                 loading="eager"
                                 decoding="async"
                             />
                         ) : (
-                            <div className="daily-artwork-image-placeholder">
+                            <div className={styles['daily-artwork-image-placeholder']}>
                                 <span>No disponible</span>
                             </div>
                         )}
                     </div>
 
                     {/* Información de la obra */}
-                    <div className="daily-artwork-info">
-                        <h3 className="daily-artwork-work-title">{artwork.title}</h3>
+                    <div className={styles['daily-artwork-info']}>
+                        <h3 className={styles['daily-artwork-work-title']}>{artwork.title}</h3>
 
                         {artwork.artist_title && (
-                            <div className="daily-artwork-detail">
+                            <div className={styles['daily-artwork-detail']}>
                                 <strong>Artista:</strong>
                                 <span>{artwork.artist_title}</span>
                             </div>
@@ -182,7 +182,7 @@ export default function DailyArtwork() {
                         )}
 
                         {date && (
-                            <div className="daily-artwork-date-note">
+                            <div className={styles['daily-artwork-date-note']}>
                                 Actualizado: {date}
                             </div>
                         )}

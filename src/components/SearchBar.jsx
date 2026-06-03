@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../styles/SearchBar.css";
+import styles from "../styles/SearchBar.module.css";
 
 export default function SearchBar({ onSearch, isLoading }) {
     const [query, setQuery] = useState("");
@@ -16,11 +16,11 @@ export default function SearchBar({ onSearch, isLoading }) {
     };
 
     return (
-        <form className="search-bar" onSubmit={handleSubmit}>
-            <div className="search-container">
+        <form className={styles['search-bar']} onSubmit={handleSubmit}>
+            <div className={styles['search-container']}>
                 <input
                     type="text"
-                    className="search-input"
+                    className={styles['search-input']}
                     placeholder="Busca obras de arte, artistas, técnicas..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
@@ -29,7 +29,7 @@ export default function SearchBar({ onSearch, isLoading }) {
                 {query && (
                     <button
                         type="button"
-                        className="clear-btn"
+                        className={styles['clear-btn']}
                         onClick={handleClear}
                         aria-label="Limpiar búsqueda"
                     >
@@ -38,13 +38,13 @@ export default function SearchBar({ onSearch, isLoading }) {
                 )}
                 <button
                     type="submit"
-                    className="search-btn"
+                    className={styles['search-btn']}
                     disabled={isLoading || !query.trim()}
                     aria-label="Buscar"
                 >
                     {isLoading ? (
                         <>
-                            <span className="spinner"></span>
+                            <span className={styles['spinner']}></span>
                             Buscando...
                         </>
                     ) : (

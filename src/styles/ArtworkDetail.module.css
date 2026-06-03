@@ -169,7 +169,6 @@
     box-shadow: 0 8px 20px rgba(122, 92, 71, 0.3);
 }
 
-/* Scrollbar customizado */
 .detail-info::-webkit-scrollbar {
     width: 6px;
 }

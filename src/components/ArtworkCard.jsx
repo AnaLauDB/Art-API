@@ -1,4 +1,4 @@
-import "../styles/ArtworkCard.css";
+import styles from "../styles/ArtworkCard.module.css";
 import { generateSrcSet, generateSizes } from "../services/imageServices";
 import { useState, useEffect } from "react";
 import { isFavorite, toggleFavorite } from "../services/favoritesService";
@@ -65,27 +65,26 @@ export default function ArtworkCard({ artwork, onClick, onImageError }) {
     };
 
     return (
-        <div className="artwork-card" onClick={onClick}>
-            <div className="artwork-image-container">
+        <div className={styles['artwork-card']} onClick={onClick}>
+            <div className={styles['artwork-image-container']}>
                 {imgSrc ? (
                     <img
                         src={imgSrc}
                         srcSet={hadError ? '' : srcSet}
                         sizes={sizes}
                         alt={artwork.title}
-                        className="artwork-image"
+                        className={styles['artwork-image']}
                         loading="lazy"
                         decoding="async"
                         onError={handleImgError}
                     />
                 ) : (
-                    <div className="artwork-image-placeholder">
+                    <div className={styles['artwork-image-placeholder']}>
                         <span>No disponible</span>
                     </div>
                 )}
 
-                <div className="artwork-overlay">
-                    <button className="view-btn">Ver detalles</button>
+                <div className={styles['artwork-overlay']}>
                     <div className="artwork-actions">
                         <button
                             className={`fav-btn ${fav ? 'fav-active' : ''}`}
@@ -102,16 +101,22 @@ export default function ArtworkCard({ artwork, onClick, onImageError }) {
                 </div>
             </div>
 
-            <div className="artwork-info">
-                <h3 className="artwork-title">{artwork.title}</h3>
+            <div className={styles['artwork-info']}>
+                <h3 className={styles['artwork-title']}>{artwork.title}</h3>
                 {artwork.artist_title && (
-                    <p className="artwork-artist">{artwork.artist_title}</p>
+                    <p className={styles['artwork-artist']}>{artwork.artist_title}</p>
                 )}
                 {artwork.date_display && (
-                    <p className="artwork-date">{artwork.date_display}</p>
+                    <p className={styles['artwork-date']}>{artwork.date_display}</p>
                 )}
                 {artwork.technique && (
-                    <p className="artwork-technique">{artwork.technique}</p>
+                    <p className={styles['artwork-technique']}>{artwork.technique}</p>
+                )}
+                {artwork.culture && (
+                    <p className={styles['artwork-artist']} style={{ marginTop: 8 }}>{artwork.culture}</p>
+                )}
+                {artwork.description && (
+                    <p style={{ marginTop: 8, color: '#777', fontSize: '0.9rem' }}>{artwork.description}</p>
                 )}
             </div>
         </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../styles/FilterPanel.css";
+import styles from "../styles/FilterPanel.module.css";
 
 export default function FilterPanel({ onFilter, isLoading }) {
     const [filters, setFilters] = useState({
@@ -39,17 +39,17 @@ export default function FilterPanel({ onFilter, isLoading }) {
     const hasActiveFilters = Object.values(filters).some((v) => v);
 
     return (
-        <div className="filter-panel">
-            <div className="filter-header">
+        <div className={styles['filter-panel']}>
+            <div className={styles['filter-header']}>
                 <h3>🎨 Filtros Avanzados</h3>
                 {hasActiveFilters && (
-                    <button className="reset-btn" onClick={handleReset} disabled={isLoading}>
+                    <button className={styles['reset-btn']} onClick={handleReset} disabled={isLoading}>
                         Limpiar filtros
                     </button>
                 )}
             </div>
 
-            <div className="filter-group">
+            <div className={styles['filter-group']}>
                 <label htmlFor="query">Búsqueda:</label>
                 <input
                     type="text"
@@ -62,7 +62,7 @@ export default function FilterPanel({ onFilter, isLoading }) {
                 />
             </div>
 
-            <div className="filter-group">
+            <div className={styles['filter-group']}>
                 <label htmlFor="culture">Cultura:</label>
                 <input
                     type="text"
@@ -75,7 +75,7 @@ export default function FilterPanel({ onFilter, isLoading }) {
                 />
             </div>
 
-            <div className="filter-group">
+            <div className={styles['filter-group']}>
                 <label htmlFor="type">Tipo de Obra:</label>
                 <input
                     type="text"
@@ -88,7 +88,7 @@ export default function FilterPanel({ onFilter, isLoading }) {
                 />
             </div>
 
-            <div className="filter-group">
+            <div className={styles['filter-group']}>
                 <label htmlFor="department">Departamento:</label>
                 <input
                     type="text"
@@ -101,7 +101,7 @@ export default function FilterPanel({ onFilter, isLoading }) {
                 />
             </div>
 
-            <div className="filter-group">
+            <div className={styles['filter-group']}>
                 <label htmlFor="technique">Técnica:</label>
                 <input
                     type="text"
@@ -114,7 +114,7 @@ export default function FilterPanel({ onFilter, isLoading }) {
                 />
             </div>
 
-            <div className="filter-group">
+            <div className={styles['filter-group']}>
                 <label htmlFor="creation_date">Año de Creación:</label>
                 <input
                     type="text"
@@ -128,7 +128,7 @@ export default function FilterPanel({ onFilter, isLoading }) {
             </div>
 
             <button
-                className="apply-btn"
+                className={styles['apply-btn']}
                 onClick={handleApplyFilters}
                 disabled={isLoading}
             >

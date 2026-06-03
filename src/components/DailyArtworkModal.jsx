@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setDailyArtwork, setLoading, setError } from '../redux/slices/dailyPickSlice';
 import { getTodayDateKey, isNewDay } from '../utils/dateUtils';
 import { searchArtworks } from '../services/arteServices';
-import '../styles/DailyArtwork.css';
+import styles from '../styles/DailyArtwork.module.css';
 
 /**
  * Componente DailyArtworkModal - Obra de arte sorpresa del día en modal
@@ -94,15 +94,15 @@ export default function DailyArtworkModal() {
     // Mientras carga
     if (loading || !isInitialized) {
         return (
-            <div className="daily-artwork-modal-overlay">
-                <div className="daily-artwork-modal">
+            <div className={styles['daily-artwork-modal-overlay']}>
+                <div className={styles['daily-artwork-modal']}>
                     <button
-                        className="daily-artwork-modal-close"
+                        className={styles['daily-artwork-modal-close']}
                         onClick={() => setIsOpen(false)}
                     >
                         ✕
                     </button>
-                    <p className="loading-text">Cargando tu obra del día...</p>
+                    <p className={styles['loading-text']}>Cargando tu obra del día...</p>
                 </div>
             </div>
         );
@@ -111,15 +111,15 @@ export default function DailyArtworkModal() {
     // Si hay error
     if (error) {
         return (
-            <div className="daily-artwork-modal-overlay">
-                <div className="daily-artwork-modal">
+            <div className={styles['daily-artwork-modal-overlay']}>
+                <div className={styles['daily-artwork-modal']}>
                     <button
-                        className="daily-artwork-modal-close"
+                        className={styles['daily-artwork-modal-close']}
                         onClick={() => setIsOpen(false)}
                     >
                         ✕
                     </button>
-                    <p className="error-text">{error}</p>
+                    <p className={styles['error-text']}>{error}</p>
                 </div>
             </div>
         );
@@ -128,15 +128,15 @@ export default function DailyArtworkModal() {
     // Si no hay obra
     if (!artwork) {
         return (
-            <div className="daily-artwork-modal-overlay">
-                <div className="daily-artwork-modal">
+            <div className={styles['daily-artwork-modal-overlay']}>
+                <div className={styles['daily-artwork-modal']}>
                     <button
-                        className="daily-artwork-modal-close"
+                        className={styles['daily-artwork-modal-close']}
                         onClick={() => setIsOpen(false)}
                     >
                         ✕
                     </button>
-                    <p className="no-artwork-text">No se encontró obra del día</p>
+                    <p className={styles['no-artwork-text']}>No se encontró obra del día</p>
                 </div>
             </div>
         );
@@ -145,75 +145,75 @@ export default function DailyArtworkModal() {
     const imageUrl = artwork.image_id;
 
     return (
-        <div className="daily-artwork-modal-overlay">
-            <div className="daily-artwork-modal">
+        <div className={styles['daily-artwork-modal-overlay']}>
+            <div className={styles['daily-artwork-modal']}>
                 <button
-                    className="daily-artwork-modal-close"
+                    className={styles['daily-artwork-modal-close']}
                     onClick={() => setIsOpen(false)}
                 >
                     ✕
                 </button>
 
-                <h2 className="daily-artwork-modal-title">Tu Obra del Día</h2>
+                <h2 className={styles['daily-artwork-modal-title']}>Tu Obra del Día</h2>
 
                 {/* Imagen */}
-                <div className="daily-artwork-modal-image-wrapper">
+                <div className={styles['daily-artwork-modal-image-wrapper']}>
                     {imageUrl ? (
                         <img
                             src={imageUrl}
                             alt={artwork.title}
-                            className="daily-artwork-modal-image"
+                            className={styles['daily-artwork-modal-image']}
                             loading="eager"
                             decoding="async"
                         />
                     ) : (
-                        <div className="daily-artwork-modal-image-placeholder">
+                        <div className={styles['daily-artwork-modal-image-placeholder']}>
                             <span>No disponible</span>
                         </div>
                     )}
                 </div>
 
                 {/* Información de la obra */}
-                <div className="daily-artwork-modal-info">
-                    <h3 className="daily-artwork-modal-work-title">{artwork.title}</h3>
+                <div className={styles['daily-artwork-modal-info']}>
+                    <h3 className={styles['daily-artwork-modal-work-title']}>{artwork.title}</h3>
 
                     {artwork.artist_title && (
-                        <div className="daily-artwork-modal-detail">
+                        <div className={styles['daily-artwork-modal-detail']}>
                             <strong>Artista:</strong>
                             <span>{artwork.artist_title}</span>
                         </div>
                     )}
 
                     {artwork.date_display && (
-                        <div className="daily-artwork-modal-detail">
+                        <div className={styles['daily-artwork-modal-detail']}>
                             <strong>Año:</strong>
                             <span>{artwork.date_display}</span>
                         </div>
                     )}
 
                     {artwork.technique && (
-                        <div className="daily-artwork-modal-detail">
+                        <div className={styles['daily-artwork-modal-detail']}>
                             <strong>Técnica:</strong>
                             <span>{artwork.technique}</span>
                         </div>
                     )}
 
                     {artwork.culture && (
-                        <div className="daily-artwork-modal-detail">
+                        <div className={styles['daily-artwork-modal-detail']}>
                             <strong>Cultura:</strong>
                             <span>{artwork.culture}</span>
                         </div>
                     )}
 
                     {artwork.type && (
-                        <div className="daily-artwork-modal-detail">
+                        <div className={styles['daily-artwork-modal-detail']}>
                             <strong>Tipo:</strong>
                             <span>{artwork.type}</span>
                         </div>
                     )}
 
                     {date && (
-                        <div className="daily-artwork-modal-date-note">
+                        <div className={styles['daily-artwork-modal-date-note']}>
                             Actualizado: {date}
                         </div>
                     )}
