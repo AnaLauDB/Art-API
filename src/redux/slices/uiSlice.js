@@ -13,6 +13,7 @@ const initialState = {
         visible: false,
     },
     sidebarOpen: false,       // Para navegación móvil
+    showProfile: false,       // Mostrar perfil de usuario
 };
 
 const uiSlice = createSlice({
@@ -50,6 +51,10 @@ const uiSlice = createSlice({
         setSidebarOpen: (state, action) => {
             state.sidebarOpen = action.payload;
         },
+
+        setProfileVisible: (state, action) => {
+            state.showProfile = action.payload;
+        },
     },
 });
 
@@ -61,5 +66,6 @@ export const {
     hideNotification,
     toggleSidebar,
     setSidebarOpen,
+    setProfileVisible,
 } = uiSlice.actions;
 export default uiSlice.reducer;

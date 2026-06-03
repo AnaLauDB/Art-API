@@ -6,6 +6,7 @@ import ArtworkGrid from "./components/ArtworkGrid";
 import ArtworkDetail from "./components/ArtworkDetail";
 import DailyArtworkModal from "./components/DailyArtworkModal";
 import Header from "./components/Shared/Header";
+import UserProfile from "./components/UserProfile";
 import AuthModal from "./components/Auth/AuthModal";
 import ErrorBoundary from "./components/ErrorBoundary";
 import GalleryErrorBoundary from "./components/GalleryErrorBoundary";
@@ -18,6 +19,7 @@ import "./App.css";
 function App() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const showProfile = useSelector(state => state.ui.showProfile);
   const { items: artworks, loading: isLoading, error, currentPage, totalPages } = useSelector(state => state.artworks);
   const [localSelectedArtwork, setLocalSelectedArtwork] = useState(null);
 
@@ -130,38 +132,44 @@ function App() {
               </div>
             )}
 
-            <GalleryErrorBoundary>
-              <ArtworkGrid
-                artworks={artworks}
-                onArtworkClick={setLocalSelectedArtwork}
-                isLoading={isLoading}
-              />
-            </GalleryErrorBoundary>
+            {showProfile ? (
+              <UserProfile />
+            ) : (
+              <>
+                <GalleryErrorBoundary>
+                  <ArtworkGrid
+                    artworks={artworks}
+                    onArtworkClick={setLocalSelectedArtwork}
+                    isLoading={isLoading}
+                  />
+                </GalleryErrorBoundary>
 
-            {totalPages > 1 && !isLoading && artworks.length > 0 && (
-              <div className="pagination">
-                <button
-                  onClick={() => {
-                    const next = Math.max(1, currentPage - 1);
-                    dispatch(setCurrentPage(next));
-                  }}
-                  disabled={currentPage === 1}
-                >
-                  ← Anterior
-                </button>
-                <span>
-                  Página {currentPage} de {totalPages}
-                </span>
-                <button
-                  onClick={() => {
-                    const next = Math.min(totalPages, currentPage + 1);
-                    dispatch(setCurrentPage(next));
-                  }}
-                  disabled={currentPage === totalPages}
-                >
-                  Siguiente →
-                </button>
-              </div>
+                {totalPages > 1 && !isLoading && artworks.length > 0 && (
+                  <div className="pagination">
+                    <button
+                      onClick={() => {
+                        const next = Math.max(1, currentPage - 1);
+                        dispatch(setCurrentPage(next));
+                      }}
+                      disabled={currentPage === 1}
+                    >
+                      ← Anterior
+                    </button>
+                    <span>
+                      Página {currentPage} de {totalPages}
+                    </span>
+                    <button
+                      onClick={() => {
+                        const next = Math.min(totalPages, currentPage + 1);
+                        dispatch(setCurrentPage(next));
+                      }}
+                      disabled={currentPage === totalPages}
+                    >
+                      Siguiente →
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </section>
         </div>
@@ -175,6 +183,8 @@ function App() {
       )}
 
       <AuthModal />
+
+
 
       <footer className="app-footer">
         <p>

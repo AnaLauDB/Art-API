@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/slices/authSlice';
 import { setAuthModalVisible } from '../../redux/slices/uiSlice';
+import { setProfileVisible } from '../../redux/slices/uiSlice';
 import { logoutUser } from '../../services/authServices';
 
 /**
@@ -39,6 +40,9 @@ function Header() {
                 {isLoggedIn && user ? (
                     <div>
                         <span>👤 Bienvenido, {user.name}</span>
+                        <button onClick={() => dispatch(setProfileVisible(true))}>
+                            ⭐ Perfil
+                        </button>
                         <button onClick={handleLogout}>
                             🚪 Cerrar Sesión
                         </button>
