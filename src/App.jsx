@@ -116,7 +116,6 @@ function App() {
           </div>
           <p className={styles.siteSubtitle}>Explora las mejores obras de arte del Cleveland Art Museum</p>
         </div>
-        <SearchBar onSearch={handleSearch} isLoading={isLoading} />
       </header>
 
       {isLoggedIn && (
