@@ -1,0 +1,54 @@
+/* Estilos simples para alinear el logo con el título en el header */
+.logoWrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 6px 8px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.0));
+    border-radius: 8px;
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.siteTitle {
+    margin: 0;
+    font-size: 1.6rem;
+    line-height: 1;
+    font-weight: 600;
+    text-align: center;
+    color: #1b263b;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Llamativo en hover para recordar identidad */
+.logoWrap:hover .siteTitle {
+    color: #744f48;
+    transform: translateX(2px);
+}
+
+@media (max-width: 900px) {
+    .logo {
+        width: 64px;
+    }
+
+    .siteTitle {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .logo {
+        width: 48px;
+    }
+
+    .siteTitle {
+        font-size: 1.0rem;
+    }
+}

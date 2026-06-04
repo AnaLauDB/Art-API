@@ -15,6 +15,8 @@ import { searchArtworksAsync, filterArtworksAsync, setCurrentPage } from "./redu
 import { setUser } from "./redux/slices/authSlice";
 import { getCurrentUser, getToken } from "./services/authServices";
 import "./App.css";
+import styles from "./App.module.css";
+import Logo from "./assets/Logo_ClevelandArt.jpeg";
 
 function App() {
   const dispatch = useDispatch();
@@ -99,12 +101,19 @@ function App() {
 
       <header className="app-header">
         <div className="header-content">
-          <h1 style={{ cursor: 'pointer' }} onClick={() => {
-            setLastSearchQuery('art');
-            setLastFilters(null);
-            dispatch(setCurrentPage(1));
-            dispatch(searchArtworksAsync({ query: 'art', limit: 12, page: 1 }));
-          }}>🎨 Cleveland Art Museum </h1>
+          <div
+            className={styles.logoWrap}
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              setLastSearchQuery('art');
+              setLastFilters(null);
+              dispatch(setCurrentPage(1));
+              dispatch(searchArtworksAsync({ query: 'art', limit: 12, page: 1 }));
+            }}
+          >
+            <img src={Logo} alt="Logo Cleveland Art Museum" className={styles.logo} />
+            <h1 className={styles.siteTitle}>Cleveland Art Museum</h1>
+          </div>
           <p>Explora las mejores obras de arte del Cleveland Art Museum</p>
         </div>
         <SearchBar onSearch={handleSearch} isLoading={isLoading} />
