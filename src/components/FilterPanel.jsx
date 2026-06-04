@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "../styles/FilterPanel.module.css";
+import manageSearchIcon from '../assets/iconos/manage_search.svg';
 
 export default function FilterPanel({ onFilter, isLoading }) {
     const [filters, setFilters] = useState({
@@ -41,7 +42,7 @@ export default function FilterPanel({ onFilter, isLoading }) {
     return (
         <div className={styles['filter-panel']}>
             <div className={styles['filter-header']}>
-                <h3>🎨 Filtros Avanzados</h3>
+                <h3><img src={manageSearchIcon} alt="Filtros" style={{ width: 20, height: 20, marginRight: 8 }} />Filtros Avanzados</h3>
                 {hasActiveFilters && (
                     <button className={styles['reset-btn']} onClick={handleReset} disabled={isLoading}>
                         Limpiar filtros

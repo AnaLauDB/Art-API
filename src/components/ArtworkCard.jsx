@@ -2,6 +2,8 @@ import styles from "../styles/ArtworkCard.module.css";
 import { generateSrcSet, generateSizes } from "../services/imageServices";
 import { useState, useEffect } from "react";
 import { isFavorite, toggleFavorite } from "../services/favoritesService";
+import favoriteIcon from '../assets/iconos/favorite.svg';
+import shareIcon from '../assets/iconos/share.svg';
 
 const PLACEHOLDER = '/src/assets/hero.png';
 
@@ -92,10 +94,10 @@ export default function ArtworkCard({ artwork, onClick, onImageError }) {
                             onClick={handleToggleFav}
                             title={fav ? 'Quitar de favoritos' : 'Agregar a favoritos'}
                         >
-                            {fav ? '♥' : '♡'}
+                            <img src={favoriteIcon} alt={fav ? 'Quitar de favoritos' : 'Agregar a favoritos'} style={{ width: 18, height: 18 }} />
                         </button>
                         <button className="share-btn" onClick={handleShare} title="Compartir">
-                            ↗
+                            <img src={shareIcon} alt="Compartir" style={{ width: 16, height: 16 }} />
                         </button>
                     </div>
                 </div>

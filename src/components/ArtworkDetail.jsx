@@ -1,4 +1,5 @@
 import styles from "../styles/ArtworkDetail.module.css";
+import closeIcon from '../assets/iconos/close_fullscreen.svg';
 
 const PLACEHOLDER = '/src/assets/hero.png';
 
@@ -9,7 +10,7 @@ export default function ArtworkDetail({ artwork, onClose }) {
         <div className={styles['detail-modal-overlay']} onClick={onClose}>
             <div className={styles['detail-modal']} onClick={(e) => e.stopPropagation()}>
                 <button className={styles['close-btn']} onClick={onClose} aria-label="Cerrar">
-                    ✕
+                    <img src={closeIcon} alt="Cerrar" style={{ width: 20, height: 20 }} />
                 </button>
 
                 <div className={styles['detail-content']}>

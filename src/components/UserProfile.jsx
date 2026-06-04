@@ -5,6 +5,7 @@ import ArtworkCard from './ArtworkCard';
 import { setProfileVisible } from '../redux/slices/uiSlice';
 import { setCurrentPage, searchArtworksAsync } from '../redux/slices/artworksSlice';
 import { getAvatar, setAvatar } from '../services/avatarService';
+import backIcon from '../assets/iconos/arrow_back.svg';
 
 // Lista actual de assets disponibles (se puede actualizar cuando añadas más imágenes a src/assets)
 const AVAILABLE_ASSETS = [
@@ -76,7 +77,10 @@ export default function UserProfile() {
         <div className="profile-page" style={{ padding: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2>Perfil de {user.name}</h2>
-                <button onClick={handleBack}>Volver</button>
+                <button onClick={handleBack} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <img src={backIcon} alt="Volver" style={{ width: 18, height: 18 }} />
+                    <span>Volver</span>
+                </button>
             </div>
 
             <div style={{ display: 'flex', gap: '24px', marginTop: '12px' }}>

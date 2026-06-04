@@ -5,6 +5,7 @@ import { setAuthModalVisible } from '../../redux/slices/uiSlice';
 import { setProfileVisible } from '../../redux/slices/uiSlice';
 import { logoutUser } from '../../services/authServices';
 import { getAvatar } from '../../services/avatarService';
+import logoutIcon from '../../assets/iconos/logout.svg';
 
 /**
  * Header - Componente de Encabezado
@@ -58,8 +59,9 @@ function Header() {
                         <button onClick={() => dispatch(setProfileVisible(true))}>
                             ⭐ Perfil
                         </button>
-                        <button onClick={handleLogout}>
-                            🚪 Cerrar Sesión
+                        <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                            <img src={logoutIcon} alt="Cerrar sesión" style={{ width: 18, height: 18 }} />
+                            <span>Cerrar sesión</span>
                         </button>
                     </div>
                 ) : (
