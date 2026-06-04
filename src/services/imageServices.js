@@ -1,97 +1,103 @@
 /**
- * Servicio de optimización de imágenes
- * Genera URLs optimizadas para diferentes resoluciones
- * Soporta responsive design sin agregar librerías externas
+ * Servicio de optimización y validación de imágenes
+ * Sin HEAD requests. Valida la carga real de la imagen con Image().
  */
 
-/**
- * Tamaños de imagen disponibles para responsive design
- * Basado en puntos de corte comunes de dispositivos
- */
 const IMAGE_SIZES = {
-    thumbnail: 150,    // Para previsualizaciones
-    small: 300,        // Mobile
-    medium: 600,       // Tablet
-    large: 1000,       // Desktop
-    xlarge: 1400,      // Desktop grande
+    thumbnail: 150,
+    small: 300,
+    medium: 600,
+    large: 1000,
+    xlarge: 1400,
 };
+
+// Cache simple para no validar la misma URL más de una vez
+const imageValidationCache = new Map();
 
 /**
  * Genera una URL optimizada de imagen del tamaño especificado
+ * Cleveland Open Access ya entrega URLs directas.
  * @param {string} imageUrl - URL original de la imagen
- * @param {string} size - Tamaño deseado (thumbnail, small, medium, large, xlarge)
- * @returns {string} URL optimizada o original si no se puede procesar
+ * @param {string} size - Tamaño deseado
+ * @returns {string|null}
  */
-export const getOptimizedImageUrl = (imageUrl, size = 'medium') => {
-    if (!imageUrl) return null;
-
-    // Si la URL no es válida, devolver la original
-    if (typeof imageUrl !== 'string') return null;
-
-    // Para Cleveland Art Museum: la URL ya está optimizada
-    // Solo necesitamos devolver la original
+export const getOptimizedImageUrl = (imageUrl, size = "medium") => {
+    if (!imageUrl || typeof imageUrl !== "string") return null;
     return imageUrl;
 };
 
 /**
- * Genera un string srcSet para usar en etiquetas img
- * Define múltiples resoluciones para que el navegador elija la mejor
- * @param {string} imageUrl - URL de la imagen
- * @returns {string} srcSet para el atributo srcset de img
+ * Genera srcSet simple para compatibilidad.
+ * En esta API la misma URL se usa para todos los densities.
+ * @param {string} imageUrl
+ * @returns {string}
  */
 export const generateSrcSet = (imageUrl) => {
-    if (!imageUrl) return '';
-
-    // Para Cleveland Art Museum: generar versiones de diferente densidad
-    // Los navegadores modernos soportan srcSet con múltiples densidades
-    const srcSet = `
-        ${imageUrl} 1x,
-        ${imageUrl} 2x
-    `.trim();
-
-    return srcSet;
+    if (!imageUrl) return "";
+    return `${imageUrl} 1x, ${imageUrl} 2x`;
 };
 
 /**
- * Genera un string sizes para usar con srcSet
- * Especifica qué imagen usar según el ancho de la ventana
- * @returns {string} sizes para el atributo sizes de img
+ * Genera sizes para responsive images
+ * @returns {string}
  */
 export const generateSizes = () => {
-    // Definir cómo se muestra la imagen en diferentes pantallas
-    const sizes = `
+    return `
         (max-width: 480px) 90vw,
         (max-width: 768px) 45vw,
         (max-width: 1024px) 33vw,
         25vw
     `.trim();
-
-    return sizes;
 };
 
 /**
- * Verifica si una URL de imagen es válida y accesible
- * @param {string} imageUrl - URL a verificar
- * @returns {Promise<boolean>} true si la imagen es válida
+ * Verifica si una URL de imagen realmente puede cargarse.
+ * No usa HEAD. Usa carga real de imagen.
+ * @param {string} imageUrl
+ * @returns {Promise<boolean>}
  */
-export const isValidImageUrl = async (imageUrl) => {
-    if (!imageUrl) return false;
-
-    try {
-        const response = await fetch(imageUrl, { method: 'HEAD' });
-        return response.ok;
-    } catch (error) {
-        console.error('Error validating image URL:', error);
-        return false;
+export const isValidImageUrl = (imageUrl) => {
+    if (!imageUrl || typeof imageUrl !== "string") {
+        return Promise.resolve(false);
     }
+
+    if (imageValidationCache.has(imageUrl)) {
+        return Promise.resolve(imageValidationCache.get(imageUrl));
+    }
+
+    return new Promise((resolve) => {
+        const img = new Image();
+        let settled = false;
+
+        const finish = (result) => {
+            if (settled) return;
+            settled = true;
+            imageValidationCache.set(imageUrl, result);
+            resolve(result);
+        };
+
+        const timeout = setTimeout(() => finish(false), 8000);
+
+        img.onload = () => {
+            clearTimeout(timeout);
+            finish(true);
+        };
+
+        img.onerror = () => {
+            clearTimeout(timeout);
+            finish(false);
+        };
+
+        img.src = imageUrl;
+    });
 };
 
 /**
  * Calcula el ancho óptimo basado en el dispositivo
- * @returns {number} Ancho en píxeles
+ * @returns {number}
  */
 export const getOptimalImageWidth = () => {
-    if (typeof window === 'undefined') return IMAGE_SIZES.medium;
+    if (typeof window === "undefined") return IMAGE_SIZES.medium;
 
     const width = window.innerWidth;
 
@@ -102,9 +108,8 @@ export const getOptimalImageWidth = () => {
 };
 
 /**
- * Obtiene información sobre los tamaños de imagen disponibles
- * Útil para debugging y configuración
- * @returns {object} Objeto con los tamaños disponibles
+ * Obtiene información sobre tamaños de imagen
+ * @returns {object}
  */
 export const getImageSizesInfo = () => {
     return IMAGE_SIZES;
