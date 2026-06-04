@@ -1,15 +1,31 @@
 /* Estilos simples para alinear el logo con el título en el header */
+:global(:root) {
+    --color-depth: #744f48;
+    /* Color de profundidad */
+    --color-brand: #9a692e;
+    /* Color principal de marca */
+    --color-highlight: #c29d63;
+    /* Highlight premium */
+    --color-secondary: #4a5545;
+    /* Color secundario curatorial */
+    --color-bg: #f6f0d6;
+    /* Fondo principal */
+    --color-surface: #d8c3a0;
+    /* Superficie secundaria */
+    --ui-radius: 8px;
+}
+
 .logoWrap {
     display: flex;
     align-items: center;
     gap: 16px;
     padding: 6px 8px;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.0));
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
     border-radius: 8px;
 }
 
 .logo {
-    width: 150px;
+    width: 250px;
     height: auto;
     object-fit: cover;
     border-radius: 8px;
@@ -24,7 +40,7 @@
     line-height: 1;
     font-weight: 600;
     text-align: center;
-    color: #1b263b;
+    color: var(--color-depth);
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
@@ -34,14 +50,27 @@
     font-size: 1.25rem;
     font-weight: 500;
     line-height: 1.4;
-    text-align: left;
-    color: #555;
+    text-align: center;
+    color: var(--color-secondary);
 }
 
 /* Llamativo en hover para recordar identidad */
 .logoWrap:hover .siteTitle {
-    color: #744f48;
+    color: var(--color-brand);
     transform: translateX(2px);
+}
+
+/* Centrar h1 y p dentro del header-content (globally applied) */
+:global(.header-content) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 18px 12px;
+    background: transparent;
+    text-align: center;
 }
 
 @media (max-width: 900px) {
