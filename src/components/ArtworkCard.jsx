@@ -100,25 +100,6 @@ export default function ArtworkCard({ artwork, onClick, onImageError }) {
                     </div>
                 </div>
             </div>
-
-            <div className={styles['artwork-info']}>
-                <h3 className={styles['artwork-title']}>{artwork.title}</h3>
-                {artwork.artist_title && (
-                    <p className={styles['artwork-artist']}>{artwork.artist_title}</p>
-                )}
-                {artwork.date_display && (
-                    <p className={styles['artwork-date']}>{artwork.date_display}</p>
-                )}
-                {artwork.technique && (
-                    <p className={styles['artwork-technique']}>{artwork.technique}</p>
-                )}
-                {artwork.culture && (
-                    <p className={styles['artwork-artist']} style={{ marginTop: 8 }}>{artwork.culture}</p>
-                )}
-                {artwork.description && (
-                    <p style={{ marginTop: 8, color: '#777', fontSize: '0.9rem' }}>{artwork.description}</p>
-                )}
-            </div>
         </div>
     );
 }

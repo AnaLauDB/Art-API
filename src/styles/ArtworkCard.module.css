@@ -1,37 +1,51 @@
 .artwork-card {
     background: #FFFBF8;
     border-radius: 12px;
+    /* evitar que la imagen sobresalga y solape otras cards */
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(122, 92, 71, 0.08);
-    transition: all 0.3s ease;
+    transition: min-height 0.3s ease-in-out, box-shadow 0.3s ease;
     cursor: pointer;
-    height: 100%;
+    min-height: 215px;
+    /* estado compacto inicial */
     display: flex;
     flex-direction: column;
     border: 1px solid rgba(168, 130, 109, 0.1);
 }
 
 .artwork-card:hover {
-    transform: translateY(-8px);
+    /* al hacer hover aumentamos la altura para revelar la info */
+    min-height: 320px;
+    transform: translateY(-6px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
 .artwork-image-container {
     position: relative;
-    overflow: hidden;
+    /* hacemos que la imagen tenga tamaño fijo para el efecto, pero responsive */
+    width: 100%;
+    max-width: 260px;
+    height: 260px;
+    margin: 8px auto 0 auto;
     background: #f0f0f0;
-    aspect-ratio: 1 / 1;
+    z-index: 1;
+    transition: transform 0.3s ease-in-out;
 }
 
 .artwork-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    border-radius: 12px;
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+    /* posición inicial: ligero desplazamiento para efecto de pop */
+    transform: translateY(-18%);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
 }
 
+/* al hover reducimos un poco el desplazamiento de la imagen */
 .artwork-card:hover .artwork-image {
-    transform: scale(1.05);
+    transform: translateY(-6%);
 }
 
 .artwork-image-placeholder {
@@ -50,7 +64,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.45);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,11 +92,30 @@
     transform: scale(1.05);
 }
 
+/* contenido (detalles) inicialmente oculto y desplazado hacia arriba */
 .artwork-info {
     padding: 1.5rem;
     flex: 1;
     display: flex;
     flex-direction: column;
+    position: relative;
+    top: -140px;
+    padding: 10px 15px;
+    color: #111;
+    text-align: center;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+/* al hover revelamos el contenido con pequeño delay */
+.artwork-card:hover .artwork-info {
+    margin-top: 30px;
+    visibility: visible;
+    opacity: 1;
+    top: 0;
+    transition-delay: 0.2s;
 }
 
 .artwork-title {
