@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SearchBar from "./components/SearchBar";
 import FilterPanel from "./components/FilterPanel";
 import ArtworkGrid from "./components/ArtworkGrid";
 import ArtworkDetail from "./components/ArtworkDetail";
@@ -198,7 +197,7 @@ function App() {
         <p>
           © 2024 Cleveland Art Museum • Datos del{" "}
           <a
-            href="https://openaccess.clevelandart.org/"
+            href="https://openaccess-api.clevelandart.org/?utm_source=chatgpt.com"
             target="_blank"
             rel="noopener noreferrer"
           >
