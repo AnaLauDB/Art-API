@@ -19,12 +19,23 @@
 
 .siteTitle {
     margin: 0;
+    font-family: "Cormorant Garamond", serif;
     font-size: 1.6rem;
     line-height: 1;
     font-weight: 600;
     text-align: center;
     color: #1b263b;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.siteSubtitle {
+    margin: 0;
+    font-family: "Inter";
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: left;
+    color: #555;
 }
 
 /* Llamativo en hover para recordar identidad */

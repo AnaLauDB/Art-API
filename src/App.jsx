@@ -114,7 +114,7 @@ function App() {
             <img src={Logo} alt="Logo Cleveland Art Museum" className={styles.logo} />
             <h1 className={styles.siteTitle}>Cleveland Art Museum</h1>
           </div>
-          <p>Explora las mejores obras de arte del Cleveland Art Museum</p>
+          <p className={styles.siteSubtitle}>Explora las mejores obras de arte del Cleveland Art Museum</p>
         </div>
         <SearchBar onSearch={handleSearch} isLoading={isLoading} />
       </header>
