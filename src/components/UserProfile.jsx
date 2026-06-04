@@ -3,13 +3,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getFavorites, removeFavorite } from '../services/favoritesService';
 import ArtworkCard from './ArtworkCard';
 import { setProfileVisible } from '../redux/slices/uiSlice';
+import { setCurrentPage, searchArtworksAsync } from '../redux/slices/artworksSlice';
 import { getAvatar, setAvatar } from '../services/avatarService';
 
 // Lista actual de assets disponibles (se puede actualizar cuando añadas más imágenes a src/assets)
 const AVAILABLE_ASSETS = [
-    '/src/assets/hero.png',
-    '/src/assets/react.svg',
-    '/src/assets/vite.svg',
+    '/src/assets/icons_users/boy1.png',
+    '/src/assets/icons_users/girl1.png',
+    '/src/assets/icons_users/boy2.png',
+    '/src/assets/icons_users/girl2.png',
+    '/src/assets/icons_users/boy3.png',
+    '/src/assets/icons_users/girl3.png',
+    '/src/assets/icons_users/boy4.png',
+    '/src/assets/icons_users/girl4.png',
+    '/src/assets/icons_users/boy5.png',
+    '/src/assets/icons_users/girl5.png',
 ];
 
 export default function UserProfile() {
@@ -36,7 +44,11 @@ export default function UserProfile() {
     }, [user]);
 
     const handleBack = () => {
+        // Ocultar vista de perfil y volver a la galería en página 1
         dispatch(setProfileVisible(false));
+        dispatch(setCurrentPage(1));
+        dispatch(searchArtworksAsync({ query: 'art', limit: 12, page: 1 }));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleRemove = (id) => {
@@ -45,7 +57,7 @@ export default function UserProfile() {
     };
 
     const handleSelectAvatar = (assetPath) => {
-        setAvatar(user?.id, assetPath);
+        // solo actualizamos el estado local; persistimos al guardar
         setCurrentAvatar(assetPath);
     };
 
@@ -53,6 +65,8 @@ export default function UserProfile() {
         const hobbies = hobbiesText.split(',').map(s => s.trim()).filter(Boolean);
         const mod = await import('../services/profileService');
         mod.saveProfile(user?.id, { description, hobbies });
+        // persistir avatar seleccionado cuando se guarda el perfil
+        if (currentAvatar) setAvatar(user?.id, currentAvatar);
         alert('Perfil guardado.');
     };
 
