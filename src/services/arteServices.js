@@ -40,8 +40,8 @@ export const searchArtworks = async (q, limit = 12, page = 1) => {
             mappedData = (response.data.data || []).map((artwork) => ({
                 id: artwork.id,
                 title: artwork.title || "Sin título",
-                artist_title: artwork.artists && artwork.artists[0]
-                    ? artwork.artists[0].name
+                artist_title: artwork.creators && artwork.creators[0]
+                    ? artwork.creators[0].description
                     : "Artista desconocido",
                 date_display: artwork.creation_date || artwork.date_end || "Fecha desconocida",
                 medium_display: artwork.technique || "Técnica desconocida",
@@ -113,8 +113,8 @@ export const getArtworksByFilters = async (filters = {}) => {
             mappedData = (response.data.data || []).map((artwork) => ({
                 id: artwork.id,
                 title: artwork.title || "Sin título",
-                artist_title: artwork.artists && artwork.artists[0]
-                    ? artwork.artists[0].name
+                artist_title: artwork.creators && artwork.creators[0]
+                    ? artwork.creators[0].description
                     : "Artista desconocido",
                 date_display: artwork.creation_date || artwork.date_end || "Fecha desconocida",
                 medium_display: artwork.technique || "Técnica desconocida",
@@ -163,8 +163,8 @@ export const getArtworkDetails = async (id) => {
             data: {
                 id: artwork.id,
                 title: artwork.title || "Sin título",
-                artist_title: artwork.artists && artwork.artists[0]
-                    ? artwork.artists[0].name
+                artist_title: artwork.creators && artwork.creators[0]
+                    ? artwork.creators[0].description
                     : "Artista desconocido",
                 date_display: artwork.creation_date || artwork.date_end || "Fecha desconocida",
                 medium_display: artwork.technique || "Técnica desconocida",
