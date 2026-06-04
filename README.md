@@ -313,20 +313,6 @@ No requiere configuración especial. La API es pública y accesible sin autentic
 
 El proyecto usa Vite con React. La configuración está en `vite.config.js`.
 
-## 🐛 Troubleshooting
-
-### "No se pudieron cargar las obras de arte"
-- Verifica tu conexión a Internet
-- Comprueba que la API está disponible: https://api.artic.edu/api/v1/artworks/search
-- Revisa la consola del navegador para ver el error específico
-
-### Imágenes no cargan
-- Algunas obras antiguas pueden no tener imágenes digitalizadas
-- La aplicación mostrará un placeholder en estos casos
-
-### Rendimiento lento
-- Reduce el número de resultados por página
-- Usa filtros más específicos para limitar resultados
 
 ## 🎯 Objetivos v2.0 - En Desarrollo
 
