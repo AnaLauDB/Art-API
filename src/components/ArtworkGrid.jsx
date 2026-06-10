@@ -8,7 +8,7 @@ export default function ArtworkGrid({ artworks, onArtworkClick, isLoading }) {
     if (isLoading) {
         return (
             <div className={styles['gallery-loading']}>
-                <div className={styles['loading-spinner']}></div>
+                <div className={styles['loader']}></div>
                 <p>Cargando obras de arte...</p>
             </div>
         );
