@@ -1,82 +1,84 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAuthModalVisible } from '../../redux/slices/uiSlice';
-import LoginForm from './LoginForm';
-import RegisterForm from './RegisterForm';
-import styles from '../../styles/AuthModal.module.css';
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuthModalVisible } from "../../redux/slices/uiSlice";
+import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
+import styles from "../../styles/AuthModal.module.css";
 
-/**
- * AuthModal - Modal de Autenticación
- * 
- * ¿Qué hace?
- * - Muestra modal con formularios de login/registro
- * - Permite cambiar entre login y registro sin navegar
- * - Se abre solo cuando usuario NO está autenticado
- * - Se cierra cuando el login es exitoso
- * 
- * Estado local:
- * - isLogin: si es true muestra login, si es false muestra registro
- */
 function AuthModal() {
-    const dispatch = useDispatch();
-    const [isLogin, setIsLogin] = useState(true);
-    const showModal = useSelector(state => state.ui.showAuthModal);
+  const dispatch = useDispatch();
 
-    // Si no debe mostrar el modal, retornar null
-    if (!showModal) {
-        return null;
-    }
+  const [isLogin, setIsLogin] = useState(true);
 
-    const handleToggleForm = () => {
-        setIsLogin(!isLogin);
-    };
+  const showModal = useSelector((state) => state.ui.showAuthModal);
 
-    const handleCloseModal = () => {
-        dispatch(setAuthModalVisible(false));
-    };
+  if (!showModal) return null;
 
-    return (
-        <div className={styles['auth-modal-container']}>
-            <div className={styles['auth-modal-backdrop']} onClick={handleCloseModal}>
-                {/* Backdrop oscuro detrás del modal */}
-            </div>
+  const handleCloseModal = () => {
+    dispatch(setAuthModalVisible(false));
+  };
 
-            <div className={styles['auth-modal-content']}>
-                {/* Botón para cerrar modal */}
-                <button
-                    className={styles['auth-modal-close']}
-                    onClick={handleCloseModal}
-                    type="button"
-                    aria-label="Cerrar modal"
-                >
-                    ✕
-                </button>
+  const handleToggleForm = () => {
+    setIsLogin((prev) => !prev);
+  };
 
-                {/* Contenido del modal */}
-                {isLogin ? (
-                    <>
-                        <LoginForm />
-                        <p>
-                            ¿No tienes cuenta?{' '}
-                            <button onClick={handleToggleForm} type="button">
-                                Regístrate aquí
-                            </button>
-                        </p>
-                    </>
-                ) : (
-                    <>
-                        <RegisterForm />
-                        <p>
-                            ¿Ya tienes cuenta?{' '}
-                            <button onClick={handleToggleForm} type="button">
-                                Inicia sesión aquí
-                            </button>
-                        </p>
-                    </>
-                )}
-            </div>
+  return (
+    <div className={styles.modalContainer}>
+      <div className={styles.backdrop} onClick={handleCloseModal} />
+
+      <div className={styles.modalCard}>
+        <button
+          className={styles.closeButton}
+          onClick={handleCloseModal}
+          type="button"
+        >
+          ✕
+        </button>
+
+        {/* <div className={styles.header}>
+          <h2>{isLogin ? "Iniciar Sesión" : "Crear Cuenta"}</h2>
+
+          <p>
+            {isLogin
+              ? "Accede para guardar tus obras favoritas y personalizar tu experiencia."
+              : "Únete a la comunidad del Cleveland Art Museum."}
+          </p>
+        </div> */}
+
+        <div className={styles.formWrapper}>
+          {isLogin ? <LoginForm /> : <RegisterForm />}
         </div>
-    );
+
+        <div className={styles.footer}>
+          {isLogin ? (
+            <>
+              <span>¿No tienes cuenta?</span>
+
+              <button
+                type="button"
+                className={styles.switchButton}
+                onClick={handleToggleForm}
+              >
+                Regístrate aquí
+              </button>
+            </>
+          ) : (
+            <>
+              <span>¿Ya tienes cuenta?</span>
+
+              <button
+                type="button"
+                className={styles.switchButton}
+                onClick={handleToggleForm}
+              >
+                Inicia sesión
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default AuthModal;
