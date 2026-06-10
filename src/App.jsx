@@ -10,7 +10,11 @@ import AuthModal from "./components/Auth/AuthModal";
 import ErrorBoundary from "./components/ErrorBoundary";
 import GalleryErrorBoundary from "./components/GalleryErrorBoundary";
 import DailyPickErrorBoundary from "./components/DailyPickErrorBoundary";
-import { searchArtworksAsync, filterArtworksAsync, setCurrentPage } from "./redux/slices/artworksSlice";
+import {
+  searchArtworksAsync,
+  filterArtworksAsync,
+  setCurrentPage,
+} from "./redux/slices/artworksSlice";
 import { setUser } from "./redux/slices/authSlice";
 import { getCurrentUser, getToken } from "./services/authServices";
 import "./App.css";
@@ -19,9 +23,15 @@ import Logo from "./assets/Logo_ClevelandArt.jpeg";
 
 function App() {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-  const showProfile = useSelector(state => state.ui.showProfile);
-  const { items: artworks, loading: isLoading, error, currentPage, totalPages } = useSelector(state => state.artworks);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const showProfile = useSelector((state) => state.ui.showProfile);
+  const {
+    items: artworks,
+    loading: isLoading,
+    error,
+    currentPage,
+    totalPages,
+  } = useSelector((state) => state.artworks);
   const [localSelectedArtwork, setLocalSelectedArtwork] = useState(null);
 
   // Estados para rastrear la búsqueda/filtro actual
@@ -37,38 +47,48 @@ function App() {
     const token = getToken();
 
     if (savedUser && token) {
-      dispatch(setUser({
-        user: savedUser,
-        token: token,
-      }));
+      dispatch(
+        setUser({
+          user: savedUser,
+          token: token,
+        }),
+      );
     }
   }, [dispatch]);
 
   // Buscar obras por término
-  const handleSearch = useCallback(async (query) => {
-    setLastSearchQuery(query); // Guardar la búsqueda actual
-    setLastFilters(null);      // Limpiar filtros cuando buscamos por término
-    dispatch(setCurrentPage(1));
-    dispatch(searchArtworksAsync({ query, limit: 12, page: 1 }));
-  }, [dispatch]);
+  const handleSearch = useCallback(
+    async (query) => {
+      setLastSearchQuery(query); // Guardar la búsqueda actual
+      setLastFilters(null); // Limpiar filtros cuando buscamos por término
+      dispatch(setCurrentPage(1));
+      dispatch(searchArtworksAsync({ query, limit: 12, page: 1 }));
+    },
+    [dispatch],
+  );
 
   // Aplicar filtros avanzados
-  const handleFilter = useCallback(async (filters) => {
-    // Si no hay filtros activos, tratar como 'limpiar filtros' y volver a la búsqueda por defecto
-    const hasAny = Object.values(filters || {}).some(v => v && String(v).trim() !== "");
-    if (!hasAny) {
-      setLastFilters(null);
-      setLastSearchQuery("art");
-      dispatch(setCurrentPage(1));
-      dispatch(searchArtworksAsync({ query: 'art', limit: 12, page: 1 }));
-      return;
-    }
+  const handleFilter = useCallback(
+    async (filters) => {
+      // Si no hay filtros activos, tratar como 'limpiar filtros' y volver a la búsqueda por defecto
+      const hasAny = Object.values(filters || {}).some(
+        (v) => v && String(v).trim() !== "",
+      );
+      if (!hasAny) {
+        setLastFilters(null);
+        setLastSearchQuery("art");
+        dispatch(setCurrentPage(1));
+        dispatch(searchArtworksAsync({ query: "art", limit: 12, page: 1 }));
+        return;
+      }
 
-    setLastSearchQuery(null);  // Limpiar búsqueda cuando usamos filtros
-    setLastFilters(filters);   // Guardar los filtros actuales
-    dispatch(setCurrentPage(1));
-    dispatch(filterArtworksAsync({ filters, limit: 12, page: 1 }));
-  }, [dispatch]);
+      setLastSearchQuery(null); // Limpiar búsqueda cuando usamos filtros
+      setLastFilters(filters); // Guardar los filtros actuales
+      dispatch(setCurrentPage(1));
+      dispatch(filterArtworksAsync({ filters, limit: 12, page: 1 }));
+    },
+    [dispatch],
+  );
 
   // Cargar obras iniciales al montar
   useEffect(() => {
@@ -85,9 +105,21 @@ function App() {
 
     // Re-disparar la búsqueda o el filtro según el contexto guardado
     if (lastSearchQuery) {
-      dispatch(searchArtworksAsync({ query: lastSearchQuery, limit: 12, page: currentPage }));
+      dispatch(
+        searchArtworksAsync({
+          query: lastSearchQuery,
+          limit: 12,
+          page: currentPage,
+        }),
+      );
     } else if (lastFilters) {
-      dispatch(filterArtworksAsync({ filters: lastFilters, limit: 12, page: currentPage }));
+      dispatch(
+        filterArtworksAsync({
+          filters: lastFilters,
+          limit: 12,
+          page: currentPage,
+        }),
+      );
     }
 
     // Scroll al inicio de la galería para mejor UX
@@ -102,18 +134,26 @@ function App() {
         <div className="header-content">
           <div
             className={styles.logoWrap}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: "pointer" }}
             onClick={() => {
-              setLastSearchQuery('art');
+              setLastSearchQuery("art");
               setLastFilters(null);
               dispatch(setCurrentPage(1));
-              dispatch(searchArtworksAsync({ query: 'art', limit: 12, page: 1 }));
+              dispatch(
+                searchArtworksAsync({ query: "art", limit: 12, page: 1 }),
+              );
             }}
           >
-            <img src={Logo} alt="Logo Cleveland Art Museum" className={styles.logo} />
+            <img
+              src={Logo}
+              alt="Logo Cleveland Art Museum"
+              className={styles.logo}
+            />
             <h1 className={styles.siteTitle}>Cleveland Art Museum</h1>
           </div>
-          <p className={styles.siteSubtitle}>Explora las mejores obras de arte del Cleveland Art Museum</p>
+          <p className={styles.siteSubtitle}>
+            Explora las mejores obras de arte del Cleveland Art Museum
+          </p>
         </div>
       </header>
 
@@ -132,7 +172,7 @@ function App() {
           <section className="content">
             {error && (
               <div className="error-message">
-                <p>❌ {error}</p>
+                <p> {error}</p>
                 <button onClick={() => handleSearch("art")}>
                   Intentar de nuevo
                 </button>
@@ -190,8 +230,6 @@ function App() {
       )}
 
       <AuthModal />
-
-
 
       <footer className="app-footer">
         <p>
