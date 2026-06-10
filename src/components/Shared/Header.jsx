@@ -1,80 +1,107 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../redux/slices/authSlice';
-import { setAuthModalVisible } from '../../redux/slices/uiSlice';
-import { setProfileVisible } from '../../redux/slices/uiSlice';
-import { logoutUser } from '../../services/authServices';
-import { getAvatar } from '../../services/avatarService';
-import logoutIcon from '../../assets/iconos/logout.svg';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/slices/authSlice";
+import {
+  setAuthModalVisible,
+  setProfileVisible,
+} from "../../redux/slices/uiSlice";
+import { logoutUser } from "../../services/authServices";
+import { getAvatar } from "../../services/avatarService";
+import ButtonsHeader from "./Buttom";
+import logoutIcon from "../../assets/iconos/logout.svg";
+import profileIcon from "../../assets/iconos/profile.svg";
+import loginIcon from "../../assets/iconos/login.svg";
+import styles from "../../styles/Header.module.css";
 
-/**
- * Header - Componente de Encabezado
- * 
- * ¿Qué hace?
- * - Muestra información del usuario si está logueado
- * - Botón de logout si está logueado
- * - Botón de login si NO está logueado
- * 
- * Conectado a Redux:
- * - auth.isLoggedIn: saber si está logueado
- * - auth.user: obtener datos del usuario
- * - dispatch: para hacer logout
- */
 function Header() {
-    const dispatch = useDispatch();
-    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-    const user = useSelector(state => state.auth.user);
-    const [avatar, setAvatar] = useState(null);
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (user && user.id) {
-            const a = getAvatar(user.id);
-            setAvatar(a);
-        } else {
-            setAvatar(null);
-        }
-    }, [user]);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-    const handleLogout = () => {
-        // Limpiar localStorage
-        logoutUser();
+  const user = useSelector((state) => state.auth.user);
 
-        // Actualizar Redux
-        dispatch(logout());
-    };
+  const [avatar, setAvatar] = useState(null);
 
-    const handleOpenAuthModal = () => {
-        dispatch(setAuthModalVisible(true));
-    };
+  useEffect(() => {
+    if (user?.id) {
+      setAvatar(getAvatar(user.id));
+    } else {
+      setAvatar(null);
+    }
+  }, [user]);
 
-    return (
-        <header>
-            <div>
-                {isLoggedIn && user ? (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        {avatar ? (
-                            <img src={avatar} alt="avatar" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }} />
-                        ) : null}
-                        <span> Bienvenido, {user.name}</span>
-                        <button onClick={() => dispatch(setProfileVisible(true))}>
-                            ⭐ Perfil
-                        </button>
-                        <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <img src={logoutIcon} alt="Cerrar sesión" style={{ width: 18, height: 18 }} />
-                            <span>Cerrar sesión</span>
-                        </button>
-                    </div>
-                ) : (
-                    <div>
-                        <span>No has iniciado sesión</span>
-                        <button onClick={handleOpenAuthModal}>
-                            🔐 Iniciar Sesión
-                        </button>
-                    </div>
-                )}
+  const handleLogout = () => {
+    logoutUser();
+    dispatch(logout());
+  };
+
+  const handleOpenAuthModal = () => {
+    dispatch(setAuthModalVisible(true));
+  };
+
+  return (
+    <header className={styles.header}>
+      <div className={styles.container}>
+        {isLoggedIn && user ? (
+          <>
+            {/* Información usuario */}
+            <div className={styles.userSection}>
+              {avatar && (
+                <img src={avatar} alt="Avatar" className={styles.avatar} />
+              )}
+
+              <div className={styles.userInfo}>
+                <span className={styles.welcome}>Bienvenida, {user.name}</span>
+
+                <span className={styles.subtitle}>
+                  Explora nuevas obras hoy
+                </span>
+              </div>
             </div>
-        </header>
-    );
+
+            {/* Acciones */}
+            <div className={styles.actions}>
+              <ButtonsHeader
+                variant="profile"
+                onClick={() => dispatch(setProfileVisible(true))}
+              >
+                <div className="button-inner">
+                  <img src={profileIcon} alt="Perfil" />
+                  Perfil
+                </div>
+              </ButtonsHeader>
+
+              <ButtonsHeader variant="logout" onClick={handleLogout}>
+                <div className="button-inner">
+                  <img src={logoutIcon} alt="Cerrar sesión" />
+                  Salir
+                </div>
+              </ButtonsHeader>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={styles.guestSection}>
+              <div className={styles.userInfo}>
+                <span className={styles.welcome}>Cleveland Art Museum</span>
+
+                <span className={styles.subtitle}>
+                  Inicia sesión para guardar favoritos
+                </span>
+              </div>
+
+              <ButtonsHeader variant="login" onClick={handleOpenAuthModal}>
+                <div className="button-inner">
+                  <img src={loginIcon} alt="Iniciar sesión" />
+                  Iniciar sesión
+                </div>
+              </ButtonsHeader>
+            </div>
+          </>
+        )}
+      </div>
+    </header>
+  );
 }
 
 export default Header;
