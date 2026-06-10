@@ -52,14 +52,6 @@
     font-size: 3rem;
 }
 
-/* .artwork-overlay {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 12px;
-    opacity: 1;
-} */
-
 .artwork-card:hover .artwork-overlay {
     opacity: 1;
 }
@@ -75,7 +67,7 @@
 }
 
 .view-btn:hover {
-    background: var(--color-depth);
+    background: var(--color-brand);
     transform: scale(1.05);
 }
 
@@ -109,6 +101,15 @@
     font-weight: 600;
     line-height: 1.4;
     flex: 1;
+}
+
+.view-btn {
+    display: flex;
+    justify-content: center;
+    align-content: stretch;
+    align-items: flex-end;
+    gap: 10px;
+    margin-top: 14px;
 }
 
 .artwork-artist {
