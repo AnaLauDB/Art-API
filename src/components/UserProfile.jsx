@@ -11,6 +11,7 @@ import { getAvatar, setAvatar } from "../services/avatarService";
 import backIcon from "../assets/iconos/arrow_back.svg";
 import deleteIcon from "../assets/iconos/delete.svg";
 import styles from "../styles/UserProfile.module.css";
+import ArtworkActionButton from "./ArtworkActionButton";
 
 const AVAILABLE_ASSETS = [
   "/src/assets/icons_users/boy1.png",
@@ -222,18 +223,13 @@ export default function UserProfile() {
               <div key={a.id} className={styles.favoriteItem}>
                 <ArtworkCard artwork={a} onClick={() => {}} />
 
-                <button
+                <ArtworkActionButton
+                  variant="delete"
+                  data-tip="Eliminar favorito"
                   onClick={() => handleRemove(a.id)}
-                  type="button"
-                  aria-label="Eliminar favorito"
-                  className={styles.deleteButton}
                 >
-                  <img
-                    src={deleteIcon}
-                    alt="Eliminar"
-                    className={styles.deleteIcon}
-                  />
-                </button>
+                  <img src={deleteIcon} alt="Eliminar" />
+                </ArtworkActionButton>
               </div>
             ))}
           </div>

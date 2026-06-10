@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { isFavorite, toggleFavorite } from "../services/favoritesService";
 import favoriteIcon from "../assets/iconos/favorite.svg";
 import shareIcon from "../assets/iconos/share.svg";
+import ArtworkActionButton from "./ArtworkActionButton";
 
 const PLACEHOLDER = "/src/assets/hero.png";
 
@@ -86,25 +87,23 @@ export default function ArtworkCard({ artwork, onClick, onImageError }) {
 
       <div className={styles["artwork-overlay"]}>
         <div className={styles["view-btn"]}>
-          <button
-            className={`fav-btn ${fav ? "fav-active" : ""}`}
-            aria-pressed={fav}
-            onClick={handleToggleFav}
-            title={fav ? "Quitar de favoritos" : "Agregar a favoritos"}
-          >
-            <img
-              src={favoriteIcon}
-              alt={fav ? "Quitar de favoritos" : "Agregar a favoritos"}
-              style={{ width: 18, height: 18 }}
-            />
-          </button>
-          <button className="share-btn" onClick={handleShare} title="Compartir">
-            <img
-              src={shareIcon}
-              alt="Compartir"
-              style={{ width: 16, height: 16 }}
-            />
-          </button>
+          <div className={styles["view-btn"]}>
+            <ArtworkActionButton
+              variant="favorite"
+              data-tip={fav ? "Quitar de favoritos" : "Agregar a favoritos"}
+              onClick={handleToggleFav}
+            >
+              <img src={favoriteIcon} alt="Favorito" />
+            </ArtworkActionButton>
+
+            <ArtworkActionButton
+              variant="share"
+              data-tip="Compartir obra"
+              onClick={handleShare}
+            >
+              <img src={shareIcon} alt="Compartir" />
+            </ArtworkActionButton>
+          </div>
         </div>
       </div>
     </div>
