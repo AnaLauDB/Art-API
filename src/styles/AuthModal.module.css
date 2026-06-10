@@ -1,117 +1,131 @@
-/* AuthModal.module.css - Estilos para el Modal de Autenticación */
-
-.auth-modal-container {
+.modalContainer {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
+    inset: 0;
+
     display: flex;
+    justify-content: center;
     align-items: center;
+
+    padding: 2rem;
+
+    z-index: 9999;
+}
+
+.backdrop {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(35, 25, 18, 0.65);
+
+    backdrop-filter: blur(6px);
+}
+
+.modalCard {
+    position: relative;
+    
+        width: 100%;
+        max-width: 500px;
+    
+        max-height: 90vh;
+    
+        overflow-y: auto;
+    
+        background: #fdfbf7;
+    
+        border-radius: 24px;
+    
+        padding: 2rem;
+    
+        box-shadow:
+            0 25px 60px rgba(0, 0, 0, .18);
+    
+        z-index: 2;
+}
+
+.closeButton {
+    position: absolute;
+
+    top: 16px;
+    right: 16px;
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    background: #efe7dc;
+
+    color: #7b5a42;
+
+    font-size: 1rem;
+
+    transition: 0.3s;
+}
+
+.closeButton:hover {
+    background: #d9c4ad;
+}
+
+.header {
+    text-align: center;
+
+    margin-bottom: 1.5rem;
+}
+
+.header h2 {
+    color: #7b5a42;
+
+    font-size: 2rem;
+
+    font-family: Georgia, serif;
+
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    color: #8f7158;
+
+    line-height: 1.5;
+}
+
+.formWrapper {
+    width: 100%;
+    display: flex;
     justify-content: center;
 }
 
-.auth-modal-backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    cursor: pointer;
-    animation: fadeIn 0.3s ease-in-out;
+.footer {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 0.5rem;
 }
 
-.auth-modal-content {
-    position: relative;
-    z-index: 1001;
-    width: 90%;
-    max-width: 450px;
-    padding: 30px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    animation: slideUp 0.3s ease-out;
+.footer span {
+    color: #8f7158;
 }
 
-.auth-modal-close {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 32px;
-    height: 32px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 24px;
-    color: #666;
-    transition: color 0.2s;
-}
-
-.auth-modal-close:hover {
-    color: #000;
-}
-
-.auth-modal-content h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
-    text-align: center;
-}
-
-.auth-modal-content p {
-    text-align: center;
-    margin-top: 15px;
-    color: #666;
-    font-size: 14px;
-}
-
-.auth-modal-content p button {
+.switchButton {
     background: none;
+
     border: none;
-    color: #007bff;
+
     cursor: pointer;
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 14px;
-    padding: 0;
+
+    color: #a6764d;
+
+    font-weight: 700;
+
+    transition: 0.3s;
 }
 
-.auth-modal-content p button:hover {
-    text-decoration: underline;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media (max-width: 768px) {
-    .auth-modal-content {
-        width: 95%;
-        padding: 20px;
-    }
-
-    .auth-modal-content h2 {
-        font-size: 20px;
-    }
+.switchButton:hover {
+    color: #7b5a42;
 }

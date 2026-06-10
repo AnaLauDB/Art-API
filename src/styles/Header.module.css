@@ -1,0 +1,87 @@
+.header {
+    width: 100%;
+    background: #f8f5ef;
+
+    border-bottom: 1px solid #d7c4aa;
+
+    padding: 0.75rem 2rem;
+
+    display: flex;
+    justify-content: center;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.container {
+    width: 100%;
+    max-width: 1400px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.userSection {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+    object-fit: cover;
+
+    border: 2px solid #c9a86a;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #6d4c41;
+}
+
+.subtitle {
+    font-size: 0.85rem;
+    color: #9b8c80;
+}
+
+.actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.guestSection {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.guestText {
+    color: #6d4c41;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+
+    .container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .actions {
+        width: 100%;
+        justify-content: center;
+    }
+
+}
