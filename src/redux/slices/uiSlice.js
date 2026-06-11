@@ -14,6 +14,7 @@ const initialState = {
     },
     sidebarOpen: false,       // Para navegación móvil
     showProfile: false,       // Mostrar perfil de usuario
+    showDailyArtwork: false,     // Mostrar modal de obra del día
 };
 
 const uiSlice = createSlice({
@@ -55,6 +56,10 @@ const uiSlice = createSlice({
         setProfileVisible: (state, action) => {
             state.showProfile = action.payload;
         },
+
+        setDailyArtworkVisible: (state, action) => {
+            state.showDailyArtwork = action.payload;
+        },
     },
 });
 
@@ -67,5 +72,6 @@ export const {
     toggleSidebar,
     setSidebarOpen,
     setProfileVisible,
+    setDailyArtworkVisible,
 } = uiSlice.actions;
 export default uiSlice.reducer;
