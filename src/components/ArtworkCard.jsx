@@ -29,10 +29,7 @@ export default function ArtworkCard({ artwork, onClick, onImageError }) {
   const handleToggleFav = (e) => {
     e.stopPropagation();
     toggleFavorite({
-      id: artwork.id,
-      title: artwork.title,
-      image_id: artwork.image_id,
-      artist_title: artwork.artist_title,
+      ...artwork,
     });
     setFav((prev) => !prev);
   };
