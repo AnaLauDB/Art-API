@@ -164,12 +164,16 @@ function App() {
       )}
 
       <main className="app-main">
-        <div className="app-layout">
-          <aside className="sidebar">
-            <FilterPanel onFilter={handleFilter} isLoading={isLoading} />
-          </aside>
+        <div className={`app-layout ${showProfile ? "profile-layout" : ""}`}>
+          {!showProfile && (
+            <aside className="sidebar">
+              <FilterPanel onFilter={handleFilter} isLoading={isLoading} />
+            </aside>
+          )}
 
-          <section className="content">
+          <section
+            className={`content ${showProfile ? "content-profile" : ""}`}
+          >
             {error && (
               <div className="error-message">
                 <p> {error}</p>

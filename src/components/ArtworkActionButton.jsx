@@ -29,7 +29,7 @@ const StyledButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-width: 48px;
+  width: 80px;
   height: 38px;
   padding: 0 14px;
   border-radius: 10px;

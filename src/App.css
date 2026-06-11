@@ -68,6 +68,15 @@ body,
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 2rem;
+  transition: all 0.35s ease;
+}
+.profile-layout {
+  grid-template-columns: 1fr;
+}
+
+.content-profile {
+  width: 100%;
+  max-width: 100%;
 }
 
 .sidebar {
