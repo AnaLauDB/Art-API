@@ -9,6 +9,7 @@ import {
 import { getTodayDateKey, isNewDay } from "../utils/dateUtils";
 import { searchArtworks } from "../services/arteServices";
 import styles from "../styles/DailyArtwork.module.css";
+import favoriteIcon from "../assets/iconos/favorite.svg";
 
 /**
  * Componente DailyArtworkModal - Obra de arte sorpresa del día en modal
@@ -20,6 +21,8 @@ import styles from "../styles/DailyArtwork.module.css";
 export default function DailyArtworkModal() {
   const dispatch = useDispatch();
   const [isInitialized, setIsInitialized] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+  const [animateBg, setAnimateBg] = useState(false);
   const isOpen = useSelector((state) => state.ui.showDailyArtwork);
   const { artwork, date, loading, error } = useSelector(
     (state) => state.dailyPick,
@@ -100,6 +103,30 @@ export default function DailyArtworkModal() {
     }
   }, [dispatch, isInitialized]);
 
+  useEffect(() => {
+    if (isOpen) {
+      setShowContent(false);
+
+      const timer = setTimeout(() => {
+        setShowContent(true);
+      }, 700);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setAnimateBg(false);
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setAnimateBg(true);
+        });
+      });
+    }
+  }, [isOpen]);
+
   // Si el modal está cerrado, no renderizar
   if (!isOpen) {
     return null;
@@ -173,14 +200,39 @@ export default function DailyArtworkModal() {
       >
         <div className={styles["daily-artwork-modal-shell"]}>
           {/* Fondos animados */}
-          <div className={styles["daily-artwork-modal-backgrounds"]}>
+          <div
+            className={`
+    ${styles["daily-artwork-modal-backgrounds"]}
+    ${animateBg ? styles["bg-active"] : ""}
+  `}
+          >
             <span className={`${styles["daily-bg"]} ${styles["daily-bg1"]}`} />
             <span className={`${styles["daily-bg"]} ${styles["daily-bg2"]}`} />
             <span className={`${styles["daily-bg"]} ${styles["daily-bg3"]}`} />
             <span className={`${styles["daily-bg"]} ${styles["daily-bg4"]}`} />
             <span className={`${styles["daily-bg"]} ${styles["daily-bg5"]}`} />
           </div>
+          {animateBg && (
+            <>
+              <img
+                src={favoriteIcon}
+                alt=""
+                className={`${styles.sparkle} ${styles.sparkle1}`}
+              />
 
+              <img
+                src={favoriteIcon}
+                alt=""
+                className={`${styles.sparkle} ${styles.sparkle2}`}
+              />
+
+              <img
+                src={favoriteIcon}
+                alt=""
+                className={`${styles.sparkle} ${styles.sparkle3}`}
+              />
+            </>
+          )}
           {/* Botón cerrar */}
           <button
             type="button"
@@ -191,7 +243,10 @@ export default function DailyArtworkModal() {
             ✕
           </button>
 
-          <div className={styles["daily-artwork-modal-content"]}>
+          <div
+            className={`${styles["daily-artwork-modal-content"]}
+  ${showContent ? styles["content-visible"] : ""}`}
+          >
             {/* Imagen */}
             <div className={styles["daily-artwork-modal-image-wrapper"]}>
               {imageUrl ? (
