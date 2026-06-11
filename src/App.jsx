@@ -198,25 +198,54 @@ function App() {
                 {totalPages > 1 && !isLoading && artworks.length > 0 && (
                   <div className="pagination">
                     <button
-                      onClick={() => {
-                        const next = Math.max(1, currentPage - 1);
-                        dispatch(setCurrentPage(next));
-                      }}
+                      className="pagination-arrow"
+                      onClick={() =>
+                        dispatch(setCurrentPage(Math.max(1, currentPage - 1)))
+                      }
                       disabled={currentPage === 1}
                     >
-                      ← Anterior
+                      ←
                     </button>
-                    <span>
-                      Página {currentPage} de {totalPages}
-                    </span>
+
+                    {Array.from(
+                      { length: Math.min(totalPages, 5) },
+                      (_, index) => {
+                        let page;
+
+                        if (totalPages <= 5) {
+                          page = index + 1;
+                        } else if (currentPage <= 3) {
+                          page = index + 1;
+                        } else if (currentPage >= totalPages - 2) {
+                          page = totalPages - 4 + index;
+                        } else {
+                          page = currentPage - 2 + index;
+                        }
+
+                        return (
+                          <button
+                            key={page}
+                            className={`pagination-number ${
+                              currentPage === page ? "active" : ""
+                            }`}
+                            onClick={() => dispatch(setCurrentPage(page))}
+                          >
+                            {page}
+                          </button>
+                        );
+                      },
+                    )}
+
                     <button
-                      onClick={() => {
-                        const next = Math.min(totalPages, currentPage + 1);
-                        dispatch(setCurrentPage(next));
-                      }}
+                      className="pagination-arrow"
+                      onClick={() =>
+                        dispatch(
+                          setCurrentPage(Math.min(totalPages, currentPage + 1)),
+                        )
+                      }
                       disabled={currentPage === totalPages}
                     >
-                      Siguiente →
+                      →
                     </button>
                   </div>
                 )}
