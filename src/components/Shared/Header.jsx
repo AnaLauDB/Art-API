@@ -4,6 +4,7 @@ import { logout } from "../../redux/slices/authSlice";
 import {
   setAuthModalVisible,
   setProfileVisible,
+  setDailyArtworkVisible,
 } from "../../redux/slices/uiSlice";
 import { logoutUser } from "../../services/authServices";
 import { getAvatar } from "../../services/avatarService";
@@ -11,6 +12,7 @@ import ButtonsHeader from "./Buttom";
 import logoutIcon from "../../assets/iconos/logout.svg";
 import profileIcon from "../../assets/iconos/profile.svg";
 import loginIcon from "../../assets/iconos/login.svg";
+import dailyIcon from "../../assets/iconos/artwork.svg";
 import styles from "../../styles/Header.module.css";
 
 function Header() {
@@ -61,6 +63,16 @@ function Header() {
 
             {/* Acciones */}
             <div className={styles.actions}>
+              <ButtonsHeader
+                variant="daily"
+                onClick={() => dispatch(setDailyArtworkVisible(true))}
+              >
+                <div className="button-inner">
+                  <img src={dailyIcon} alt="Obra del día" />
+                  Obra del Día
+                </div>
+              </ButtonsHeader>
+
               <ButtonsHeader
                 variant="profile"
                 onClick={() => dispatch(setProfileVisible(true))}

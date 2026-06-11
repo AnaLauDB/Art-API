@@ -12,6 +12,10 @@ const variants = {
   login: {
     hover: "#7A9B76",
   },
+
+  daily: {
+    hover: "#8d54ce",
+  },
 };
 
 const ButtonsHeader = styled.button`
