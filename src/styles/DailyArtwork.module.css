@@ -64,7 +64,7 @@
     width: 600px;
     max-height: 90vh;
     border-radius: 28px;
-    transform: scale(0.96) translateY(16px);
+    transform: scale(0.4); 
     opacity: 0;
     transition: transform 0.32s ease, opacity 0.32s ease;
 }
@@ -75,8 +75,11 @@
 }
 
 .daily-artwork-modal.is-open {
-    transform: scale(1) translateY(0);
+    transform: scale(1);
     opacity: 1;
+    transition:
+        transform .70s cubic-bezier(.22, 1, .36, 1),
+        opacity .40s ease;
 }
 
 
@@ -85,7 +88,10 @@
     background: #fdfbf7;
     border: 1px solid rgba(116, 79, 72, 0.1);
     border-radius: 28px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.22);
+    box-shadow:
+            -40px 0 120px rgba(166, 118, 77, .18),
+            40px 0 120px rgba(191, 156, 115, .18),
+            0 30px 80px rgba(0, 0, 0, .22);
     max-height: 90vh;
     overflow-y: auto;
     overflow-x: hidden;
@@ -118,39 +124,54 @@
 
 .daily-bg {
     position: absolute;
-    inset: 0;
     border-radius: 50%;
     transform: scale(0);
-    transition: transform 0.55s ease;
 }
 
-.is-open .daily-bg1 {
+.bg-active .daily-bg1 {
+    inset: 0;
     transform: scale(1);
-    background: linear-gradient(135deg, rgba(191, 156, 115, 0.22), rgba(116, 79, 72, 0.04));
+    transition: transform .55s ease;
+    background:
+        linear-gradient(135deg,
+            rgba(166, 118, 77, .20),
+            rgba(116, 79, 72, .05));
 }
 
-.is-open .daily-bg2 {
+.bg-active .daily-bg2 {
+    inset: 10%;
     transform: scale(1);
-    background: linear-gradient(135deg, rgba(215, 195, 160, 0.22), rgba(191, 156, 115, 0.08));
-    inset: 8%;
+    transition: transform .55s ease .12s;
+    background:
+        linear-gradient(135deg,
+            rgba(191, 156, 115, .22),
+            rgba(166, 118, 77, .08));
 }
 
-.is-open .daily-bg3 {
+.bg-active .daily-bg3 {
+    inset: 20%;
     transform: scale(1);
-    background: linear-gradient(135deg, rgba(169, 134, 87, 0.12), rgba(245, 239, 230, 0.92));
-    inset: 16%;
+    transition: transform .55s ease .24s;
+    background:
+        linear-gradient(135deg,
+            rgba(222, 204, 181, .28),
+            rgba(191, 156, 115, .10));
 }
 
-.is-open .daily-bg4 {
+.bg-active .daily-bg4 {
+    inset: 30%;
     transform: scale(1);
-    background: rgba(245, 239, 230, 0.96);
-    inset: 26%;
+    transition: transform .55s ease .36s;
+    background:
+        rgba(248, 243, 235, .96);
 }
 
-.is-open .daily-bg5 {
+.bg-active .daily-bg5 {
+    inset: 40%;
     transform: scale(1);
-    background: #fffdf8;
-    inset: 34%;
+    transition: transform .65s ease .48s;
+    background:
+        #fffdf8;
 }
 
 .daily-artwork-modal-close {
@@ -290,6 +311,74 @@
     font-size: 0.88rem;
     color: var(--color-text-muted, #8f7158);
     font-family: "Inter", sans-serif;
+}
+
+.daily-artwork-modal-content {
+    opacity: 0;
+    transform: translateY(25px);
+    transition:
+        opacity .45s ease,
+        transform .45s ease;
+}
+
+.content-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sparkle {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+
+    opacity: 0;
+
+    z-index: 20;
+
+    filter:
+        drop-shadow(0 0 10px rgba(191, 156, 115, .6));
+
+    animation:
+        sparkleAppear 1.2s ease forwards;
+}
+
+.sparkle1 {
+    top: 18%;
+    left: 22%;
+    animation-delay: .65s;
+}
+
+.sparkle2 {
+    top: 24%;
+    right: 18%;
+    animation-delay: .8s;
+}
+
+.sparkle3 {
+    bottom: 20%;
+    right: 25%;
+    animation-delay: .95s;
+}
+@keyframes sparkleAppear {
+    0% {
+        opacity: 0;
+        transform: scale(.2) rotate(-45deg);
+    }
+
+    40% {
+        opacity: 1;
+        transform: scale(1.3) rotate(0deg);
+    }
+
+    70% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: .7;
+        transform: scale(.9);
+    }
 }
 
 @media (max-width: 900px) {
