@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getFavorites, removeFavorite } from "../services/favoritesService";
 import ArtworkCard from "./ArtworkCard";
+import ArtworkDetail from "./ArtworkDetail";
+import { getArtworkDetails } from "../services/arteServices";
 import { setProfileVisible } from "../redux/slices/uiSlice";
 import {
   setCurrentPage,
@@ -53,6 +55,7 @@ export default function UserProfile() {
   const [currentAvatar, setCurrentAvatar] = useState(null);
   const [description, setDescription] = useState("");
   const [selectedInterests, setSelectedInterests] = useState([]);
+  const [selectedArtwork, setSelectedArtwork] = useState(null);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -221,7 +224,10 @@ export default function UserProfile() {
           <div className={styles.favoritesGrid}>
             {favorites.map((a) => (
               <div key={a.id} className={styles.favoriteItem}>
-                <ArtworkCard artwork={a} onClick={() => {}} />
+                <ArtworkCard
+                  artwork={a}
+                  onClick={() => setSelectedArtwork(a)}
+                />
 
                 <ArtworkActionButton
                   variant="delete"
@@ -235,6 +241,12 @@ export default function UserProfile() {
           </div>
         )}
       </section>
+      {selectedArtwork && (
+        <ArtworkDetail
+          artwork={selectedArtwork}
+          onClose={() => setSelectedArtwork(null)}
+        />
+      )}
     </div>
   );
 }
