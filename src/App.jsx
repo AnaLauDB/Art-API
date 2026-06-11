@@ -25,6 +25,7 @@ function App() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const showProfile = useSelector((state) => state.ui.showProfile);
+  const showDailyArtwork = useSelector((state) => state.ui.showDailyArtwork);
   const {
     items: artworks,
     loading: isLoading,
@@ -157,11 +158,9 @@ function App() {
         </div>
       </header>
 
-      {isLoggedIn && (
-        <DailyPickErrorBoundary>
-          <DailyArtworkModal />
-        </DailyPickErrorBoundary>
-      )}
+      <DailyPickErrorBoundary>
+        <DailyArtworkModal />
+      </DailyPickErrorBoundary>
 
       <main className="app-main">
         <div className={`app-layout ${showProfile ? "profile-layout" : ""}`}>
