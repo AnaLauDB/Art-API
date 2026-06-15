@@ -1,0 +1,299 @@
+.profilePage {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px;
+    color: var(--color-depth, #744f48);
+}
+
+.pageHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.pageTitle {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(2rem, 3vw, 3rem);
+    font-weight: 700;
+    color: var(--color-depth, #744f48);
+}
+
+.backButton {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border, #d8c3a0);
+    background: #fff;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.backButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.backIcon {
+    width: 24px;
+    height: 24px;
+}
+
+.topGrid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+    align-items: stretch;
+}
+
+.card {
+    background: #fffdf8;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.aboutCard {
+    min-height: 100%;
+}
+
+.cardTitle {
+    margin: 0 0 18px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--color-depth, #744f48);
+}
+
+.avatarBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+}
+
+.avatarImage {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    border: 3px solid rgba(255, 255, 255, 0.9);
+}
+
+.avatarPlaceholder {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: #eee;
+    display: grid;
+    place-items: center;
+    color: #666;
+    font-family: "Inter", sans-serif;
+}
+
+.username {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-depth, #744f48);
+}
+
+.textarea {
+    width: 100%;
+    min-height: 180px;
+    resize: vertical;
+    border-radius: 16px;
+    border: 1px solid #d8c3a0;
+    padding: 14px 16px;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    outline: none;
+    background: #fff;
+    color: var(--color-depth, #744f48);
+    box-sizing: border-box;
+}
+
+.textarea:focus {
+    border-color: #9a692e;
+    box-shadow: 0 0 0 3px rgba(154, 105, 46, 0.12);
+}
+
+.saveButton {
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 16px;
+    border: none;
+    padding: 12px 16px;
+    background: #9a692e;
+    color: #f6f0d6;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(154, 105, 46, 0.18);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.saveButton:hover {
+    transform: translateY(-1px);
+    background: #744f48;
+}
+
+.fullWidthSection {
+    margin-top: 32px;
+    background: #fffdf8;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.sectionTitle {
+    margin: 0 0 18px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--color-depth, #744f48);
+}
+
+.sectionTitleLarge {
+    margin: 0 0 20px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(2rem, 2.5vw, 2.5rem);
+    font-weight: 700;
+    color: var(--color-depth, #744f48);
+}
+
+.interestsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+}
+
+.interestButton {
+    padding: 10px 12px;
+    border-radius: 999px;
+    border: 1px solid #d8c3a0;
+    background: #fff;
+    color: #744f48;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: none;
+}
+
+.interestButton:hover {
+    transform: translateY(-1px);
+    border-color: #9a692e;
+}
+
+.interestButtonActive {
+    border-color: #9a692e;
+    background: #9a692e;
+    color: #f6f0d6;
+    box-shadow: 0 4px 12px rgba(154, 105, 46, 0.18);
+}
+
+.avatarPickerGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.avatarPickerButton {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+}
+
+.avatarPickerImage {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.avatarPickerButton:hover .avatarPickerImage {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.14);
+}
+
+.favoritesGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 340px);
+    justify-content: center;
+    gap: 24px;
+}
+
+.favoriteItem {
+    position: relative;
+}
+
+.deleteButton {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.95);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease;
+}
+
+.deleteButton:hover {
+    transform: scale(1.05);
+}
+
+.deleteIcon {
+    width: 20px;
+    height: 20px;
+}
+
+.emptyState {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    color: var(--color-secondary, #9a692e);
+}
+
+@media (max-width: 1100px) {
+    .topGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .profilePage {
+        padding: 20px;
+    }
+
+    .pageHeader {
+        align-items: flex-start;
+    }
+
+    .fullWidthSection,
+    .card {
+        padding: 20px;
+    }
+
+    .favoritesGrid {
+        grid-template-columns: 1fr;
+    }
+}

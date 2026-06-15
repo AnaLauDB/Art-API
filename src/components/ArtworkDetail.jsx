@@ -1,81 +1,83 @@
-import "../styles/ArtworkDetail.css";
+import styles from "../styles/ArtworkDetail.module.css";
+import closeIcon from "../assets/iconos/close_fullscreen.svg";
+
+const PLACEHOLDER = "/src/assets/hero.png";
 
 export default function ArtworkDetail({ artwork, onClose }) {
-    // Nota: Carga de imágenes temporalmente deshabilitada
-    // Se investigará solución de CORS con IIIF Image API 2.0
+  const imageSrc = artwork.image_id || PLACEHOLDER;
 
-    return (
-        <div className="detail-modal-overlay" onClick={onClose}>
-            <div className="detail-modal" onClick={(e) => e.stopPropagation()}>
-                <button className="close-btn" onClick={onClose} aria-label="Cerrar">
-                    ✕
-                </button>
+  return (
+    <div className={styles["detail-modal-overlay"]} onClick={onClose}>
+      <div
+        className={styles["detail-modal"]}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          className={styles["close-btn"]}
+          onClick={onClose}
+          aria-label="Cerrar"
+        >
+          <img src={closeIcon} alt="Cerrar" style={{ width: 20, height: 20 }} />
+        </button>
 
-                <div className="detail-content">
-                    <div className="detail-image">
-                        <div className="detail-image-placeholder">
-                            <span>🖼️</span>
-                        </div>
-                    </div>
+        <div className={styles["detail-content"]}>
+          <div className={styles["detail-image"]}>
+            {imageSrc ? (
+              <img src={imageSrc} alt={artwork.title} />
+            ) : (
+              <div className={styles["detail-image-placeholder"]}>
+                <span>🖼️</span>
+              </div>
+            )}
+          </div>
 
-                    <div className="detail-info">
-                        <h1>{artwork.title}</h1>
+          <div className={styles["detail-info"]}>
+            <h1>{artwork.title}</h1>
 
-                        {artwork.artist_title && (
-                            <div className="detail-item">
-                                <strong>Artista:</strong>
-                                <p>{artwork.artist_title}</p>
-                            </div>
-                        )}
+            {artwork.artist_title && (
+              <div className={styles["detail-item"]}>
+                <strong>Artista:</strong>
+                <p>{artwork.artist_title}</p>
+              </div>
+            )}
 
-                        {artwork.date_display && (
-                            <div className="detail-item">
-                                <strong>Fecha:</strong>
-                                <p>{artwork.date_display}</p>
-                            </div>
-                        )}
+            {artwork.date_display && (
+              <div className={styles["detail-item"]}>
+                <strong>Fecha:</strong>
+                <p>{artwork.date_display}</p>
+              </div>
+            )}
 
-                        {artwork.medium_display && (
-                            <div className="detail-item">
-                                <strong>Técnica/Material:</strong>
-                                <p>{artwork.medium_display}</p>
-                            </div>
-                        )}
+            {artwork.medium_display && (
+              <div className={styles["detail-item"]}>
+                <strong>Técnica/Material:</strong>
+                <p>{artwork.medium_display}</p>
+              </div>
+            )}
 
-                        {artwork.dimensions && (
-                            <div className="detail-item">
-                                <strong>Dimensiones:</strong>
-                                <p>{artwork.dimensions}</p>
-                            </div>
-                        )}
+            {artwork.dimensions && (
+              <div className={styles["detail-item"]}>
+                <strong>Dimensiones:</strong>
+                <p>{artwork.dimensions}</p>
+              </div>
+            )}
 
-                        {artwork.description && (
-                            <div className="detail-item">
-                                <strong>Descripción:</strong>
-                                <p>{artwork.description}</p>
-                            </div>
-                        )}
+            {artwork.culture && (
+              <div className={styles["detail-item"]}>
+                <strong>Cultura:</strong>
+                <p>{artwork.culture}</p>
+              </div>
+            )}
 
-                        {artwork.credit_line && (
-                            <div className="detail-item">
-                                <strong>Crédito:</strong>
-                                <p>{artwork.credit_line}</p>
-                            </div>
-                        )}
-
-                        <div className="detail-actions">
-                            <a
-                                href={`https://www.artic.edu/artworks/${artwork.id}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="detail-link"
-                            >
-                                Ver en el Art Institute →
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {artwork.description && (
+              <div className={styles["detail-item"]}>
+                <strong>Descripción:</strong>
+                <p>{artwork.description}</p>
+              </div>
+            )}
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

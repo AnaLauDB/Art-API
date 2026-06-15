@@ -1,0 +1,93 @@
+/* Estilos simples para alinear el logo con el título en el header */
+:global(:root) {
+    --color-depth: #744f48;
+    /* Color de profundidad */
+    --color-brand: #9a692e;
+    /* Color principal de marca */
+    --color-highlight: #c29d63;
+    /* Highlight premium */
+    --color-secondary: #4a5545;
+    /* Color secundario curatorial */
+    --color-bg: #f6f0d6;
+    /* Fondo principal */
+    --color-surface: #d8c3a0;
+    /* Superficie secundaria */
+    --ui-radius: 8px;
+}
+
+.logoWrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 6px 8px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+    border-radius: 8px;
+}
+
+.logo {
+    width: 250px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.siteTitle {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.6rem;
+    line-height: 1;
+    font-weight: 600;
+    text-align: center;
+    color: var(--color-depth);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.siteSubtitle {
+    margin: 0;
+    font-family: "Inter";
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-secondary);
+}
+
+/* Llamativo en hover para recordar identidad */
+.logoWrap:hover .siteTitle {
+    color: var(--color-brand);
+    transform: translateX(2px);
+}
+
+/* Centrar h1 y p dentro del header-content (globally applied) */
+:global(.header-content) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 18px 12px;
+    background: transparent;
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .logo {
+        width: 64px;
+    }
+
+    .siteTitle {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .logo {
+        width: 48px;
+    }
+
+    .siteTitle {
+        font-size: 1.0rem;
+    }
+}

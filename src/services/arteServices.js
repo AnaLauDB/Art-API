@@ -1,34 +1,134 @@
 import axios from "axios";
+import { isValidImageUrl } from "./imageServices";
 
-const API_BASE_URL = "https://api.artic.edu/api/v1";
+// Cleveland Art Museum API
+const API_BASE_URL = "https://openaccess-api.clevelandart.org/api";
 
-// Crear instancia de axios con configuración base
 const apiClient = axios.create({
     baseURL: API_BASE_URL,
     timeout: 10000,
-    headers: {
-        "AIC-User-Agent": "art-search-engine (analog.lau@email.com)"
-    }
 });
 
+const dedupe = (arr) => [...new Set(arr.filter(Boolean))];
+
+const getArtworkImageCandidates = (artwork) => {
+    return dedupe([
+        artwork?.images?.web?.url,
+        artwork?.images?.print?.url,
+        artwork?.images?.full?.url,
+    ]);
+};
+
+const mapArtwork = (artwork, imageUrl) => ({
+    id: artwork.id,
+    title: artwork.title || "Sin título",
+    artist_title:
+        artwork.creators && artwork.creators[0]
+            ? artwork.creators[0].description
+            : "Artista desconocido",
+    date_display:
+        artwork.creation_date || artwork.date_end || "Fecha desconocida",
+    medium_display: artwork.technique || "Técnica desconocida",
+    image_id: imageUrl || null, // se conserva el nombre por compatibilidad
+    image_url: imageUrl || null, // nombre más claro para usar en nuevos componentes
+    is_public_domain: true,
+    culture: artwork.culture,
+    type: artwork.type,
+    department: artwork.department,
+    technique: artwork.technique,
+});
+
+const resolveValidImageUrl = async (artwork) => {
+    const candidates = getArtworkImageCandidates(artwork);
+
+    for (const candidate of candidates) {
+        const valid = await isValidImageUrl(candidate);
+        if (valid) return candidate;
+    }
+
+    return null;
+};
+
+const validateAndMapArtworks = async (rawArtworks, requiredCount) => {
+    const validated = await Promise.all(
+        (rawArtworks || []).map(async (artwork) => {
+            const validImageUrl = await resolveValidImageUrl(artwork);
+            if (!validImageUrl) return null;
+            return mapArtwork(artwork, validImageUrl);
+        })
+    );
+
+    return validated.filter(Boolean).slice(0, requiredCount);
+};
+
+const fetchValidArtworksPage = async ({
+    params,
+    limit,
+    page,
+    maxAttempts = 5,
+}) => {
+    const fetchLimit = Math.max(limit * 3, 30);
+    const validArtworks = [];
+    let currentPage = page;
+    let attempts = 0;
+    let total = 0;
+
+    while (validArtworks.length < limit && attempts < maxAttempts) {
+        const skip = (currentPage - 1) * fetchLimit;
+
+        const response = await apiClient.get("/artworks", {
+            params: {
+                ...params,
+                limit: fetchLimit,
+                skip,
+            },
+        });
+
+        const rawArtworks = response.data.data || [];
+        total = response.data.info?.total || total;
+
+        const remaining = limit - validArtworks.length;
+        const validatedBatch = await validateAndMapArtworks(
+            rawArtworks,
+            remaining
+        );
+
+        validArtworks.push(...validatedBatch);
+
+        const totalPages = Math.ceil(total / fetchLimit) || 1;
+
+        if (!rawArtworks.length || currentPage >= totalPages) {
+            break;
+        }
+
+        currentPage += 1;
+        attempts += 1;
+    }
+
+    return {
+        data: validArtworks.slice(0, limit),
+        pagination: {
+            total_pages: Math.ceil(total / limit) || 1,
+            total,
+            page,
+        },
+    };
+};
+
 /**
- * Buscar obras de arte por término de búsqueda
- * @param {string} q - Término de búsqueda
- * @param {number} limit - Límite de resultados
- * @param {number} page - Página de resultados
- * @returns {Promise} Resultados de búsqueda
+ * Buscar obras por término de búsqueda
+ * @param {string} q
+ * @param {number} limit
+ * @param {number} page
+ * @returns {Promise}
  */
 export const searchArtworks = async (q, limit = 12, page = 1) => {
     try {
-        const response = await apiClient.get("/artworks/search", {
-            params: {
-                q,
-                limit,
-                page,
-                fields: "id,title,image_id,artist_title,date_display,dimensions,medium_display,is_public_domain",
-            },
+        return await fetchValidArtworksPage({
+            params: { q },
+            limit,
+            page,
         });
-        return response.data;
     } catch (error) {
         console.error("Error searching artworks:", error);
         throw error;
@@ -37,26 +137,28 @@ export const searchArtworks = async (q, limit = 12, page = 1) => {
 
 /**
  * Obtener obras por filtros avanzados
- * @param {object} filters - Filtros a aplicar
- * @returns {Promise} Resultados filtrados
+ * @param {object} filters
+ * @returns {Promise}
  */
 export const getArtworksByFilters = async (filters = {}) => {
     try {
-        const params = {
-            limit: filters.limit || 12,
-            page: filters.page || 1,
-            fields: "id,title,image_id,artist_title,date_display,dimensions,medium_display,is_public_domain",
-        };
+        const limit = filters.limit || 12;
+        const page = filters.page || 1;
 
-        // Usar término de búsqueda si existe
-        if (filters.query) {
-            params.q = filters.query;
-        } else {
-            params.q = "*"; // Búsqueda general si no hay filtros específicos
-        }
+        const params = {};
 
-        const response = await apiClient.get("/artworks/search", { params });
-        return response.data;
+        if (filters.query) params.q = filters.query;
+        if (filters.culture) params.culture = filters.culture;
+        if (filters.type) params.type = filters.type;
+        if (filters.department) params.department = filters.department;
+        if (filters.technique) params.technique = filters.technique;
+        if (filters.creation_date) params.creation_date = filters.creation_date;
+
+        return await fetchValidArtworksPage({
+            params,
+            limit,
+            page,
+        });
     } catch (error) {
         console.error("Error fetching filtered artworks:", error);
         throw error;
@@ -65,17 +167,39 @@ export const getArtworksByFilters = async (filters = {}) => {
 
 /**
  * Obtener detalles de una obra específica
- * @param {number} id - ID de la obra
- * @returns {Promise} Detalles de la obra
+ * @param {number} id
+ * @returns {Promise}
  */
 export const getArtworkDetails = async (id) => {
     try {
-        const response = await apiClient.get(`/artworks/${id}`, {
-            params: {
-                fields: "id,title,image_id,artist_title,date_display,dimensions,medium_display,description,credit_line",
+        const response = await apiClient.get(`/artworks/${id}`);
+        const artwork = response.data.data;
+
+        const validImageUrl = await resolveValidImageUrl(artwork);
+
+        return {
+            data: {
+                id: artwork.id,
+                title: artwork.title || "Sin título",
+                artist_title:
+                    artwork.creators && artwork.creators[0]
+                        ? artwork.creators[0].description
+                        : "Artista desconocido",
+                date_display:
+                    artwork.creation_date ||
+                    artwork.date_end ||
+                    "Fecha desconocida",
+                medium_display: artwork.technique || "Técnica desconocida",
+                image_id: validImageUrl || null,
+                image_url: validImageUrl || null,
+                description: artwork.description,
+                credit_line: artwork.creditline,
+                culture: artwork.culture,
+                type: artwork.type,
+                department: artwork.department,
+                technique: artwork.technique,
             },
-        });
-        return response.data;
+        };
     } catch (error) {
         console.error("Error fetching artwork details:", error);
         throw error;
@@ -83,43 +207,30 @@ export const getArtworkDetails = async (id) => {
 };
 
 /**
- * Obtener la URL de imagen de una obra
- * TEMPORALMENTE DESHABILITADO: Investigando problemas de CORS con IIIF Image API 2.0
- * @param {string} imageId - ID de imagen
- * @param {string} size - Tamaño de imagen (small, medium, large)
- * @returns {string} URL de imagen
+ * Helper por compatibilidad
+ * @param {string} imageUrl
+ * @returns {string|null}
  */
-// export const getImageUrl = (imageId, size = "medium") => {
-//     if (!imageId) return null;
-//     // IIIF Image API sizes - use comma notation per official API docs
-//     // See: https://api.artic.edu/docs/#iiif-image-api
-//     const sizes = {
-//         small: "200,",      // 200px width
-//         medium: "400,",     // 400px width  
-//         large: "843,",      // 843px width (recommended by ARTIC)
-//     };
-//     // Correct IIIF endpoint from official API documentation
-//     return `https://www.artic.edu/iiif/2/${imageId}/full/${sizes[size]}/0/default.jpg`;
-// };
+export const getImageUrl = (imageUrl) => {
+    return imageUrl || null;
+};
 
 /**
- * Obtener recomendaciones basadas en una obra
- * @param {number} id - ID de la obra de referencia
- * @returns {Promise} Obras similares
+ * Recomendaciones basadas en una obra
+ * @param {number} id
+ * @returns {Promise}
  */
 export const getRecommendations = async (id) => {
     try {
-        // Primero obtener detalles de la obra
         const artwork = await getArtworkDetails(id);
 
-        // Buscar obras similares por artista o material
         const filters = {
             limit: 6,
-            query: artwork.data.title,
+            page: 1,
         };
 
-        if (artwork.data.artist_title) {
-            filters.artist = artwork.data.artist_title;
+        if (artwork.data.department) {
+            filters.department = artwork.data.department;
         }
 
         return await getArtworksByFilters(filters);
@@ -130,18 +241,12 @@ export const getRecommendations = async (id) => {
 };
 
 /**
- * Obtener lista de artistas disponibles
- * @returns {Promise} Lista de artistas
+ * Cleveland API no tiene endpoint dedicado para artistas
+ * @returns {Promise<[]>}
  */
 export const getArtists = async () => {
     try {
-        const response = await apiClient.get("/agents", {
-            params: {
-                limit: 100,
-                fields: "id,title",
-            },
-        });
-        return response.data.data;
+        return [];
     } catch (error) {
         console.error("Error fetching artists:", error);
         throw error;
@@ -149,12 +254,11 @@ export const getArtists = async () => {
 };
 
 /**
- * Obtener list de medios/técnicas
- * @returns {Promise} Lista de medios
+ * Obtener lista de medios/técnicas
+ * @returns {Promise}
  */
 export const getMediums = async () => {
     try {
-        // Obtener las categorías de medios desde las obras
         const response = await apiClient.get("/artworks/search", {
             params: {
                 limit: 1,

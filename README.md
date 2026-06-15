@@ -1,8 +1,31 @@
-# 🎨 Art Institute Explorer
+# 🎨 Art Institute Explorer - v2.0
 
-Un buscador inteligente de obras de arte que permite a los usuarios explorar contenido del Art Institute of Chicago mediante búsqueda semántica, filtros dinámicos y una experiencia visual fluida.
+Un buscador inteligente de obras de arte que permite a los usuarios explorar contenido del Art Institute of Chicago con autenticación, obra de arte sorpresa diaria y gestión de estado global avanzada.
 
-## 🚀 Características
+## 📌 Estado Actual - v2.0
+
+**Rama:** `v2_ArtApp`  
+**Fase Completada:** ✅ Fase 5 - Obra de Arte Diaria en Modal  
+**Fase Actual:** 🔄 Fase 6 - Migración Final
+
+## 🎯 Objetivos v2.0
+
+La versión 2.0 introduce mejoras arquitectónicas y nuevas funcionalidades diseñadas para un proyecto de nivel **Junior/Aprendiz**:
+
+### Mejoras Técnicas
+- ✅ **Estado Global con Redux** - Centralizar estado con Redux Toolkit
+- ✅ **Redux DevTools** - Debugging avanzado del estado
+- ✅ **Error Boundaries** - Captura y manejo de errores en componentes
+- ✅ **React Hooks** - Uso correcto de useState, useEffect, useCallback, useRef
+- ✅ **React Hook Form** - Validación de formularios simplificada
+
+### Nuevas Funcionalidades
+- ✅ **Sistema de Autenticación** - Registro e inicio de sesión con Modal Overlay
+- 🔄 **Obra de Arte Diaria** - Cada usuario logueado recibe una obra sorpresa al día
+- 🔄 **Optimización de Imágenes** - Lazy loading y múltiples resoluciones
+- ✅ **Rutas Protegidas** - Acceso limitado a usuarios autenticados
+
+## 🚀 Características v1.0 (Mantienen)
 
 - **Búsqueda Semántica**: Busca obras de arte por términos, artistas, técnicas y períodos
 - **Filtros Dinámicos Avanzados**:
@@ -43,29 +66,86 @@ Un buscador inteligente de obras de arte que permite a los usuarios explorar con
 
    La aplicación estará disponible en `http://localhost:5173`
 
-## 📦 Estructura del Proyecto
+## 📦 Estructura del Proyecto v2.0
 
 ```
 src/
 ├── components/
-│   ├── SearchBar.jsx          # Componente de búsqueda principal
-│   ├── FilterPanel.jsx        # Panel de filtros avanzados
-│   ├── ArtworkCard.jsx        # Tarjeta individual de obra
-│   ├── ArtworkGrid.jsx        # Galería de obras
-│   └── ArtworkDetail.jsx      # Modal detallado de obra
+│   ├── ErrorBoundary.jsx              # [FASE 2] Captura global de errores
+│   ├── DailyPickErrorBoundary.jsx     # [FASE 2] Error boundary regional
+│   ├── GalleryErrorBoundary.jsx       # [FASE 2] Error boundary regional
+│   ├── Auth/                          # [FASE 3] Componentes de autenticación
+│   │   ├── LoginForm.jsx              # Validación con React Hook Form
+│   │   ├── RegisterForm.jsx           # Validación con React Hook Form
+│   │   ├── ProtectedRoute.jsx         # Componente protegido
+│   │   └── AuthModal.jsx              # Modal overlay flotante
+│   ├── Gallery/                       # Componentes de galería (Mejorados v2.0)
+│   │   ├── ArtworkCard.jsx            # [FASE 4] Con lazy loading de imágenes
+│   │   ├── ArtworkDetail.jsx
+│   │   └── ArtworkGrid.jsx
+│   ├── DailyArtworkModal.jsx          # [FASE 5] Obra sorpresa diaria en MODAL
+│   ├── OptimizedImage.jsx             # [FASE 4] Imagen con Intersection Observer
+│   ├── SearchBar.jsx                  # v1.0 (se migrará)
+│   ├── FilterPanel.jsx                # v1.0 (se migrará)
+│   ├── ArtworkCard.jsx                # v1.0 (se migrará) - ACTUALIZADO FASE 4
+│   ├── ArtworkGrid.jsx                # v1.0 (se migrará)
+│   └── ArtworkDetail.jsx              # v1.0 (se migrará)
+│
 ├── services/
-│   └── arteServices.js        # Servicio para consumir API ARTIC
+│   ├── arteServices.js                # Llamadas API (Mantiene)
+│   ├── authServices.js                # [FASE 3] Lógica de autenticación
+│   └── imageServices.js               # [FASE 4] Optimización de imágenes
+│
+├── redux/                             # ✅ [FASE 1] COMPLETADO
+│   ├── store.js
+│   └── slices/
+│       ├── authSlice.js               # Estado de autenticación
+│       ├── artworksSlice.js           # Estado de obras de arte
+│       ├── dailyPickSlice.js          # Estado de obra diaria
+│       ├── filterSlice.js             # Estado de filtros
+│       └── uiSlice.js                 # Estado de UI (modales, notificaciones)
+│
+├── utils/
+│   ├── constants.js                   # URLs, configuraciones
+│   └── dateUtils.js                   # [FASE 5] Funciones de fecha para obra diaria
+│
 ├── styles/
-│   ├── SearchBar.css          # Estilos del buscador
-│   ├── FilterPanel.css        # Estilos de filtros
-│   ├── ArtworkGrid.css        # Estilos de galería
-│   └── ArtworkDetail.css      # Estilos del modal
-├── App.jsx                    # Componente principal
-├── App.css                    # Estilos globales
-└── main.jsx                   # Punto de entrada
-```
+│   ├── SearchBar.css
+│   ├── FilterPanel.css
+│   ├── ArtworkGrid.css
+│   ├── ArtworkDetail.css
+│   ├── ArtworkCard.css                # ACTUALIZADO FASE 4
+│   ├── AuthModal.css                  # [FASE 3] Estilos del modal overlay
+│   └── DailyArtwork.css               # [FASE 5] Estilos de obra diaria
+│   └── variables.css                  # CSS variables globales
+│
+├── App.jsx                            # [FASE 6] Se migrará a Redux
+├── App.css
+├── index.css
+### Resumen de Fases
+- Fase 1 — Redux setup: ✅ Completada
+- Fase 2 — Error boundaries: ✅ Completada
+- Fase 3 — Autenticación (modal): ✅ Completada
+- Fase 4 — Optimización de imágenes: ✅ Completada
+- Fase 5 — Obra diaria (modal): ✅ Completada
+- Fase 6 — Migración a Redux + thunks: ✅ Completada
+- Detección de cambio de día
+- Modal overlay con fixed positioning
+- Renderizado condicional basado en autenticación
+- Manejo de fechas en JavaScript
+- Estado persistente entre recargas de página
+- Z-index management en modales
 
-## 🔌 API Utilizada
+### Fase 6 ⏳ - Migración Final
+- **useCallback** - Optimizar re-renders
+- **useRef** - Acceso directo al DOM
+- **Thunks** - Acciones asincrónicas en Redux
+- **Testing** - Validar componentes
+
+**Aprendizajes:**
+- Cuándo usar cada hook
+- Performance optimization
+- Testing en React
 
 **Art Institute of Chicago API v1**
 - Documentación: https://api.artic.edu/docs/
@@ -100,13 +180,63 @@ src/
 3. Haz clic en "Ver en el Art Institute" para más información
 4. Cierra el modal con el botón X
 
-## 🎨 Tecnologías Utilizadas
+## 🎨 Tecnologías Utilizadas v2.0
 
+### Core
 - **React 19.2.5** - Librería de UI
 - **Vite 8.0.10** - Build tool y dev server
-- **Axios 1.15.2** - Cliente HTTP
-- **CSS3** - Estilos con grid, flexbox y animaciones
 - **JavaScript ES6+** - Lenguaje de programación
+
+### Estado Global
+- **Redux Toolkit** ✅ - Gestión de estado simplificada
+- **React-Redux** ✅ - Integración React + Redux
+- **@redux-devtools/extension** ✅ - DevTools para debugging
+
+### Autenticación y Formularios
+- **React Hook Form** ✅ - Validación de formularios [Fase 3]
+- **localStorage** ✅ - Persistencia de sesión [Fase 3]
+
+### Peticiones HTTP
+- **Axios 1.15.2** - Cliente HTTP
+
+### Estilos
+- **CSS3** - Grid, Flexbox, Animaciones
+- **CSS Variables** - Temas y configuración global
+
+### Herramientas de Desarrollo
+- **ESLint** - Linting de código
+- **Redux DevTools Chrome Extension** - Debugging de estado
+
+## 📋 Instalación y Setup v2.0
+
+### 1. Clonar y dependencias
+
+```bash
+git clone https://github.com/AnaLauDB/Art-API.git
+cd Art-API
+npm install
+```
+
+### 2. Extensión Redux DevTools (Recomendado)
+
+Para debuggear Redux en tiempo real, instala la extensión:
+- **Chrome**: [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/)
+- **Firefox**: [Redux DevTools](https://addons.mozilla.org/firefox/addon/reduxdevtools/)
+
+### 3. Iniciar desarrollo
+
+```bash
+npm run dev
+```
+
+La aplicación estará en `http://localhost:5174`
+
+### 4. Validar Redux
+
+Una vez iniciada:
+1. Abre DevTools (F12)
+2. Ve a la pestaña **Redux** (si instalaste la extensión)
+3. Deberías ver las actions y el estado global
 
 ## 🚀 Scripts Disponibles
 
@@ -122,7 +252,19 @@ npm run preview      # Previsualizar build
 npm run lint         # Ejecutar ESLint
 ```
 
-## 📱 Responsive Design
+### Características de Autenticación
+
+- **Login/Registro**: Formularios validados con React Hook Form
+- **Modal Overlay**: Interfaz flotante centrada en la pantalla con backdrop oscuro
+- **Animaciones**: Transiciones suaves (fade in + slide up)
+- **Toggle**: Cambiar entre login y registro sin perder datos
+- **Persistencia**: Token guardado en localStorage
+- **Rutas Protegidas**: Acceso limitado a usuarios logueados
+- **Obra Diaria**: Cada usuario recibe una obra sorpresa al ingresar
+- **Estado Global**: Redux para mantener datos de sesión
+- **UX Mejorada**: Modal centrado en pantalla vs al final de página
+
+## �📱 Responsive Design
 
 La aplicación es totalmente responsive:
 - **Desktop**: Barra lateral + galería principal
@@ -171,33 +313,48 @@ No requiere configuración especial. La API es pública y accesible sin autentic
 
 El proyecto usa Vite con React. La configuración está en `vite.config.js`.
 
-## 🐛 Troubleshooting
 
-### "No se pudieron cargar las obras de arte"
-- Verifica tu conexión a Internet
-- Comprueba que la API está disponible: https://api.artic.edu/api/v1/artworks/search
-- Revisa la consola del navegador para ver el error específico
+## 🎯 Objetivos v2.0 - En Desarrollo
 
-### Imágenes no cargan
-- Algunas obras antiguas pueden no tener imágenes digitalizadas
-- La aplicación mostrará un placeholder en estos casos
+### Completar en Fase 2-6 ✅
+- [x] Redux Setup y State Management
+- [x] Error Boundaries (Global, Regional, Local)
+- [x] Autenticación con Login/Registro (Modal Overlay)
+- [x] Optimización de Imágenes con Lazy Loading (Fase 4 - Completada)
+- [x] Sistema de Obra de Arte Diaria en Modal (Fase 5 - Completada)
+- [x] Migración completa a Redux
+- [ ] Testing de componentes
 
-### Rendimiento lento
-- Reduce el número de resultados por página
-- Usa filtros más específicos para limitar resultados
+### Funcionalidades Adicionales 🔄
+- [x] Guardar obras favoritas en localStorage/Redux
+- [x] Compartir obras en redes sociales
+- [ ] Modo oscuro/claro
 
-## 🎯 Mejoras Futuras
 
-- [ ] Guardar búsquedas favoritas (localStorage)
-- [ ] Comparar múltiples obras
-- [ ] Historial de búsquedas
-- [ ] Compartir en redes sociales
-- [ ] Exportar información de obras
-- [ ] Modo oscuro
-- [ ] Filtros por movimiento artístico
-- [ ] Recomendaciones personalizadas
+## 📖 Documentación de Desarrollo
 
-## 📄 Licencia
+### Para Colaboradores
+
+Esta es una aplicación de **nivel Junior/Aprendiz** diseñada para:
+- Aprender Redux y manejo de estado global
+- Comprender React Hooks profundamente
+- Implementar Error Boundaries
+- Trabajar con APIs externas
+- Optimizar performance en galerías grandes
+
+### Convenciones de Código
+
+- **Componentes**: PascalCase
+- **Archivos**: PascalCase (componentes), camelCase (services/utils)
+- **Redux**: Usar Redux Toolkit con createSlice
+- **Comentarios**: Explicar el "por qué", no el "qué"
+
+### Debugging
+
+1. **Redux DevTools**: Inspecciona el estado en tiempo real
+2. **React DevTools**: Valida renderizaciones innecesarias
+3. **Console**: Logs de errores y seguimiento
+4. **Network**: Monitorea llamadas a la API
 
 Este proyecto utiliza datos del Art Institute of Chicago bajo su política de Open Access.
 
@@ -216,14 +373,5 @@ Las contribuciones son bienvenidas. Por favor:
 **Ana Lau**
 - GitHub: [@AnaLauDB](https://github.com/AnaLauDB)
 
-## 📞 Soporte
 
-Si encuentras problemas o tienes sugerencias, por favor:
-- Abre un issue en GitHub
-- Contacta a través de GitHub Issues
 
-## 🙏 Agradecimientos
-
-- Art Institute of Chicago por proporcionar la API pública
-- Comunidad de React y Vite
-- Todos los contribuidores
